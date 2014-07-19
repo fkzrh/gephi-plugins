@@ -57,24 +57,69 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        metricDropDown = new javax.swing.JComboBox();
-        runMetricButton = new javax.swing.JButton();
-        SCScrollPane = new javax.swing.JScrollPane();
-        SCText = new javax.swing.JTextArea();
+        jDialog1 = new javax.swing.JDialog();
+        jTextPane1 = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
-        propertiesDropdown = new javax.swing.JComboBox();
         propertyButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        metricDropDown = new javax.swing.JComboBox();
+        runMetricButton = new javax.swing.JButton();
+
+        jDialog1.setLocation(new java.awt.Point(200, 200));
+
+        jTextPane1.setContentType("text/html"); // NOI18N
+        jTextPane1.setFocusable(false);
+        jTextPane1.setMargin(new java.awt.Insets(20, 20, 20, 20));
+        jDialog1.getContentPane().add(jTextPane1, java.awt.BorderLayout.PAGE_END);
 
         setAutoscrolls(true);
-        setMaximumSize(new java.awt.Dimension(600, 700));
         setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        org.openide.awt.Mnemonics.setLocalizedText(propertyButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyButton.text")); // NOI18N
+        propertyButton.setAutoscrolls(true);
+        propertyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                propertyButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
+        jPanel2.add(propertyButton, gridBagConstraints);
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setFocusable(false);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 395;
+        gridBagConstraints.ipady = 177;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 20, 15);
+        jPanel2.add(jScrollPane1, gridBagConstraints);
+
+        jScrollPane3.setViewportView(jPanel2);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weighty = 2.0;
+        add(jScrollPane3, gridBagConstraints);
 
         metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Betweenness" }));
         metricDropDown.setAutoscrolls(true);
@@ -86,11 +131,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.weightx = 3.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        jPanel1.add(metricDropDown, gridBagConstraints);
+        add(metricDropDown, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(runMetricButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.runMetricButton.text")); // NOI18N
         runMetricButton.setAutoscrolls(true);
@@ -100,139 +145,62 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        jPanel1.add(runMetricButton, gridBagConstraints);
-
-        SCText.setColumns(20);
-        SCText.setRows(5);
-        SCScrollPane.setViewportView(SCText);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 395;
-        gridBagConstraints.ipady = 177;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 6, 10, 6);
-        jPanel1.add(SCScrollPane, gridBagConstraints);
-
-        add(jPanel1, new java.awt.GridBagConstraints());
-
-        jPanel2.setLayout(new java.awt.GridBagLayout());
-
-        propertiesDropdown.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Graph Size", "Other Property" }));
-        propertiesDropdown.setAutoscrolls(true);
-        propertiesDropdown.setMinimumSize(new java.awt.Dimension(20, 27));
-        propertiesDropdown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                propertiesDropdownActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipady = 10;
-        gridBagConstraints.weightx = 3.0;
         gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        jPanel2.add(propertiesDropdown, gridBagConstraints);
-
-        org.openide.awt.Mnemonics.setLocalizedText(propertyButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyButton.text")); // NOI18N
-        propertyButton.setAutoscrolls(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        jPanel2.add(propertyButton, gridBagConstraints);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 395;
-        gridBagConstraints.ipady = 177;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        jPanel2.add(jScrollPane1, gridBagConstraints);
-
-        jScrollPane2.setViewportView(jTextPane1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        jPanel2.add(jScrollPane2, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        add(jPanel2, gridBagConstraints);
+        add(runMetricButton, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
-       SignalCollectGephiConnector scgc;
-       SCText.setText("loading...");
-       String actualMetric = metricDropDown.getSelectedItem().toString();
-       if(actualMetric.equals("Degree")){
-           scgc = new DegreeSignalCollectGephiConnectorImpl();
-           scgc.executeGraph();
-           SCText.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-       }
-       else if(actualMetric.equals("PageRank")){
-           scgc = new PageRankSignalCollectGephiConnectorImpl();
-           scgc.executeGraph();
-           jTextPane1.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-//           SCText.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-       }
-    }//GEN-LAST:event_runMetricButtonActionPerformed
+        SignalCollectGephiConnector scgc;
+       
 
-    private void propertiesDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertiesDropdownActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_propertiesDropdownActionPerformed
+//       SCText.setText("loading...");
+        String actualMetric = metricDropDown.getSelectedItem().toString();
+        if (actualMetric.equals("Degree")) {
+            scgc = new DegreeSignalCollectGephiConnectorImpl();
+            scgc.executeGraph();
+            jTextPane1.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+        } else if (actualMetric.equals("PageRank")) {
+            scgc = new PageRankSignalCollectGephiConnectorImpl();
+            scgc.executeGraph();
+            jTextPane1.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+        }
+
+        jDialog1.pack();
+        jDialog1.setVisible(true);
+    }//GEN-LAST:event_runMetricButtonActionPerformed
 
     private void metricDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metricDropDownActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_metricDropDownActionPerformed
 
+    private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_propertyButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane SCScrollPane;
-    private javax.swing.JTextArea SCText;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JComboBox metricDropDown;
-    private javax.swing.JComboBox propertiesDropdown;
     private javax.swing.JButton propertyButton;
     private javax.swing.JButton runMetricButton;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-   
+
     }
 
     @Override
     public void componentClosed() {
-        
+
     }
 
     void writeProperties(java.util.Properties p) {
@@ -246,12 +214,21 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
-    
+
     private String setMetricText(double avg, Map<String, Object> vertexMap) {
-        String res = "The average value of the vertices is: " + avg + "\n \n The single vertex values are:\n \n";
+        String res = "<!doctype html><html><head><title>HTML Editor - Full Version</title><style type=\"text/css\"></style>"
+                + "</head>"
+                + "<body>"
+                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;\">Execution Results</span></h1>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;\">Average: </span></h2>\n"
+                + "<p><span style=\"font-family:verdana,geneva,sans-serif;\">The average value of the vertices is: " + avg + " </span></p><ul>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;\">Single Values:</span></h2>";
         for (Map.Entry<String, Object> entry : vertexMap.entrySet()) {
-            res += "Vertex id: " + entry.getKey() + ", Value: " + entry.getValue() + "\n";
+            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;\">Vertex id: " + entry.getKey() + "&emsp Value: " + entry.getValue() + "</span></li>";
         }
+        
+        res += "</ul><p>&nbsp;</p></body></html>";
+
         return res;
     }
 }
