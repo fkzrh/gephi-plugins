@@ -8,7 +8,14 @@ package com.signalcollect.sna.visualization;
 import com.signalcollect.sna.DegreeSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.PageRankSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.SignalCollectGephiConnector;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -59,11 +66,16 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
         jDialog1 = new javax.swing.JDialog();
         jTextPane1 = new javax.swing.JTextPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         propertyButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane2 = new javax.swing.JTextPane();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
         metricDropDown = new javax.swing.JComboBox();
         runMetricButton = new javax.swing.JButton();
 
@@ -77,6 +89,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         setAutoscrolls(true);
         setLayout(new java.awt.GridBagLayout());
 
+        jPanel1.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jPanel2.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         org.openide.awt.Mnemonics.setLocalizedText(propertyButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyButton.text")); // NOI18N
@@ -87,39 +104,81 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        jPanel2.add(propertyButton, gridBagConstraints);
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setFocusable(false);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 395;
-        gridBagConstraints.ipady = 177;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 15, 20, 15);
-        jPanel2.add(jScrollPane1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
+        jPanel2.add(propertyButton, gridBagConstraints);
 
-        jScrollPane3.setViewportView(jPanel2);
+        jTextPane2.setEditable(false);
+        jTextPane2.setContentType("text/html"); // NOI18N
+        jTextPane2.setFocusable(false);
+        jScrollPane2.setViewportView(jTextPane2);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weighty = 2.0;
-        add(jScrollPane3, gridBagConstraints);
+        gridBagConstraints.weighty = 6.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel2.add(jScrollPane2, gridBagConstraints);
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel2.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
+        jPanel2.add(jLabel2, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 10.0;
+        jPanel1.add(jPanel2, gridBagConstraints);
+
+        jPanel3.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel1.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 15, 0, 15);
+        jPanel3.add(jLabel1, gridBagConstraints);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sc-logo-white-bg.png"))); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel3.text")); // NOI18N
+        jLabel3.setToolTipText(org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel3.toolTipText")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(20, 15, 0, 15);
+        jPanel3.add(jLabel3, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(jPanel3, gridBagConstraints);
+
+        jPanel4.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel4.setLayout(new java.awt.GridBagLayout());
 
         metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Betweenness" }));
         metricDropDown.setAutoscrolls(true);
@@ -133,9 +192,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        add(metricDropDown, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel4.add(metricDropDown, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(runMetricButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.runMetricButton.text")); // NOI18N
         runMetricButton.setAutoscrolls(true);
@@ -145,17 +205,29 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 4.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        jPanel4.add(runMetricButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(jPanel4, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 10, 15);
-        add(runMetricButton, gridBagConstraints);
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
         SignalCollectGephiConnector scgc;
-       
 
 //       SCText.setText("loading...");
         String actualMetric = metricDropDown.getSelectedItem().toString();
@@ -178,17 +250,21 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }//GEN-LAST:event_metricDropDownActionPerformed
 
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
-        // TODO add your handling code here:
+        jTextPane2.setText(setPropertyText());
     }//GEN-LAST:event_propertyButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane SCScrollPane;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane2;
     private javax.swing.JComboBox metricDropDown;
     private javax.swing.JButton propertyButton;
     private javax.swing.JButton runMetricButton;
@@ -216,19 +292,33 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }
 
     private String setMetricText(double avg, Map<String, Object> vertexMap) {
-        String res = "<!doctype html><html><head><title>HTML Editor - Full Version</title><style type=\"text/css\"></style>"
+        String res = "<!doctype html><html><head><title>Execution Results</title><style type=\"text/css\"></style>"
                 + "</head>"
                 + "<body>"
-                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;\">Execution Results</span></h1>"
-                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;\">Average: </span></h2>\n"
-                + "<p><span style=\"font-family:verdana,geneva,sans-serif;\">The average value of the vertices is: " + avg + " </span></p><ul>"
-                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;\">Single Values:</span></h2>";
+                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:14px;font-weight:normal\">Execution Results</span></h1>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Average: </span></h2>\n"
+                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: " + avg + " </span></p><ul>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Single Values:</span></h2>";
         for (Map.Entry<String, Object> entry : vertexMap.entrySet()) {
-            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;\">Vertex id: " + entry.getKey() + "&emsp Value: " + entry.getValue() + "</span></li>";
+            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">Vertex id: " + entry.getKey() + "&emsp Value: " + entry.getValue() + "</span></li>";
         }
-        
+
         res += "</ul><p>&nbsp;</p></body></html>";
 
         return res;
     }
+
+    private String setPropertyText() {
+        String res = "<!doctype html><html><head><title>Graph Properties</title><style type=\"text/css\"></style>"
+                + "</head>"
+                + "<body>"
+                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:14px;font-weight:normal;\">Graph Properties</span></h1>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Size: </span></h2>\n"
+                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: </span></p>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Nodes:</span></h2></body></html>";
+
+        return res;
+    }
+
+    
 }
