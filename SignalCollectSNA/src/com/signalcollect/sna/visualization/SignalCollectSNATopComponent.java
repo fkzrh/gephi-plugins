@@ -5,20 +5,20 @@
  */
 package com.signalcollect.sna.visualization;
 
-import com.signalcollect.sna.DegreeSignalCollectGephiConnectorImpl;
-import com.signalcollect.sna.PageRankSignalCollectGephiConnectorImpl;
-import com.signalcollect.sna.SignalCollectGephiConnector;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import com.signalcollect.sna.gephiconnectors.BetweennessSignalCollectGephiConnectorImpl;
+import com.signalcollect.sna.gephiconnectors.ClosenessSignalCollectGephiConnectorImpl;
+import com.signalcollect.sna.gephiconnectors.DegreeSignalCollectGephiConnectorImpl;
+import com.signalcollect.sna.gephiconnectors.PageRankSignalCollectGephiConnectorImpl;
+import com.signalcollect.sna.gephiconnectors.SignalCollectGephiConnector;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.Map;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 
@@ -48,6 +48,8 @@ import org.openide.windows.TopComponent;
 })
 public final class SignalCollectSNATopComponent extends TopComponent {
 
+    private SignalCollectGephiConnector scgc;
+
     public SignalCollectSNATopComponent() {
         initComponents();
         setName(Bundle.CTL_SignalCollectSNATopComponent());
@@ -64,11 +66,14 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jDialog1 = new javax.swing.JDialog();
-        jTextPane1 = new javax.swing.JTextPane();
+        jFrame1 = new javax.swing.JFrame();
+        jScrollPane1 = new javax.swing.JScrollPane(jTextPane3);
+        jTextPane3 = new javax.swing.JTextPane();
+        jFrame2 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         propertyButton = new javax.swing.JButton();
+        degreeDistributionButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
@@ -79,12 +84,18 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricDropDown = new javax.swing.JComboBox();
         runMetricButton = new javax.swing.JButton();
 
-        jDialog1.setLocation(new java.awt.Point(200, 200));
+        jTextPane3.setContentType("text/html");
+        jTextPane3.setFocusable(false);
+        jTextPane3.setMargin(new java.awt.Insets(20, 20, 20, 20));
+        jFrame1.getContentPane().add(jTextPane3, java.awt.BorderLayout.CENTER);
+        jScrollPane1.setViewportView(jTextPane3);
 
-        jTextPane1.setContentType("text/html"); // NOI18N
-        jTextPane1.setFocusable(false);
-        jTextPane1.setMargin(new java.awt.Insets(20, 20, 20, 20));
-        jDialog1.getContentPane().add(jTextPane1, java.awt.BorderLayout.PAGE_END);
+        jFrame1.getContentPane().add(jScrollPane1, java.awt.BorderLayout.PAGE_START);
+
+        jFrame1.setContentPane(jScrollPane1);
+        jFrame1.setLocation(50, 50);
+
+        jFrame2.setLocation(50, 50);
 
         setAutoscrolls(true);
         setLayout(new java.awt.GridBagLayout());
@@ -112,6 +123,22 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
         jPanel2.add(propertyButton, gridBagConstraints);
 
+        org.openide.awt.Mnemonics.setLocalizedText(degreeDistributionButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.degreeDistributionButton.text")); // NOI18N
+        degreeDistributionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        degreeDistributionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degreeDistributionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
+        jPanel2.add(degreeDistributionButton, gridBagConstraints);
+
         jTextPane2.setEditable(false);
         jTextPane2.setContentType("text/html"); // NOI18N
         jTextPane2.setFocusable(false);
@@ -120,6 +147,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 6.0;
@@ -131,6 +159,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -180,7 +209,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         jPanel4.setBackground(new java.awt.Color(178, 216, 255));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Betweenness" }));
+        metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Closeness","Betweenness" }));
         metricDropDown.setAutoscrolls(true);
         metricDropDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,21 +257,38 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
         SignalCollectGephiConnector scgc;
-
 //       SCText.setText("loading...");
         String actualMetric = metricDropDown.getSelectedItem().toString();
         if (actualMetric.equals("Degree")) {
-            scgc = new DegreeSignalCollectGephiConnectorImpl();
+            scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
             scgc.executeGraph();
-            jTextPane1.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
         } else if (actualMetric.equals("PageRank")) {
-            scgc = new PageRankSignalCollectGephiConnectorImpl();
+            scgc = new PageRankSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
             scgc.executeGraph();
-            jTextPane1.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-        }
+            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+        } else if (actualMetric.equals("Betweenness")) {
+            scgc = new BetweennessSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
+            scgc.executeGraph();
+            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+        } else if (actualMetric.equals("Closeness")) {
+            scgc = new ClosenessSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
+            scgc.executeGraph();
 
-        jDialog1.pack();
-        jDialog1.setVisible(true);
+            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+        }
+//        jScrollPane1.add(jTextPane1);
+//        jDialog1.pack();
+        Dimension dim = new Dimension(750, 450);
+//        jFrame1.add(jTextPane1);
+//        JScrollPane bla = new JScrollPane(jTextPane1);
+//        jFrame1.add(bla);
+
+        jFrame1.setMinimumSize(dim);
+        jFrame1.pack();
+        jTextPane3.setVisible(true);
+        jScrollPane1.setVisible(true);
+        jFrame1.setVisible(true);
     }//GEN-LAST:event_runMetricButtonActionPerformed
 
     private void metricDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metricDropDownActionPerformed
@@ -250,11 +296,32 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }//GEN-LAST:event_metricDropDownActionPerformed
 
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
-        jTextPane2.setText(setPropertyText());
+        if(scgc == null){
+            scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
+        }
+        jTextPane2.setText(setPropertyText(scgc.getGraphProperties().toString()));
     }//GEN-LAST:event_propertyButtonActionPerformed
 
+    private void degreeDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degreeDistributionButtonActionPerformed
+        scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
+        try {
+            JFreeChart chart = scgc.createImageFile(scgc.getDegreeDistrbution().degreeDistribution());
+            ChartPanel chartPanel = new ChartPanel(chart);
+            Dimension dim = new Dimension(750, 450);
+            jFrame2.setMinimumSize(dim);
+            jFrame2.add(chartPanel);
+
+            jFrame2.pack();
+            jFrame2.setVisible(true);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+    }//GEN-LAST:event_degreeDistributionButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog jDialog1;
+    private javax.swing.JButton degreeDistributionButton;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JFrame jFrame2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -262,9 +329,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JTextPane jTextPane3;
     private javax.swing.JComboBox metricDropDown;
     private javax.swing.JButton propertyButton;
     private javax.swing.JButton runMetricButton;
@@ -300,7 +368,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: " + avg + " </span></p><ul>"
                 + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Single Values:</span></h2>";
         for (Map.Entry<String, Object> entry : vertexMap.entrySet()) {
-            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">Vertex id: " + entry.getKey() + "&emsp Value: " + entry.getValue() + "</span></li>";
+            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">Vertex id: " + entry.getKey() + "&nbsp Value: " + entry.getValue() + "</span></li>";
         }
 
         res += "</ul><p>&nbsp;</p></body></html>";
@@ -308,17 +376,16 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         return res;
     }
 
-    private String setPropertyText() {
+    private String setPropertyText(String props) {
         String res = "<!doctype html><html><head><title>Graph Properties</title><style type=\"text/css\"></style>"
                 + "</head>"
                 + "<body>"
-                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:14px;font-weight:normal;\">Graph Properties</span></h1>"
-                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Size: </span></h2>\n"
-                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: </span></p>"
-                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Nodes:</span></h2></body></html>";
+                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">" + props + "</span></h1>";
+//                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Size: </span></h2>\n"
+//                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: </span></p>"
+//                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Nodes:</span></h2></body></html>";
 
         return res;
     }
 
-    
 }

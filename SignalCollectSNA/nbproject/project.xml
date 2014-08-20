@@ -82,28 +82,20 @@
             </module-dependencies>
             <public-packages/>
             <class-path-extension>
+                <runtime-relative-path>ext/orsonpdf-1.6-eval.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/orsonpdf-1.6-eval.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/jfreechart-1.0.19-swt.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jfreechart-1.0.19-swt.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
                 <runtime-relative-path>ext/akka-kryo-serialization-custom_2.10-0.3.4.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/akka-kryo-serialization-custom_2.10-0.3.4.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/scala-actors.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/scala-actors.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
                 <runtime-relative-path>ext/SignalCollect.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/SignalCollect.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/scala-reflect.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/scala-reflect.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/scala-compiler.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/scala-compiler.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/SignalCollectSNA.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/SignalCollectSNA.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/Java-WebSocket-1.3.0.jar</runtime-relative-path>
@@ -114,20 +106,72 @@
                 <binary-origin>release/modules/ext/paranamer-2.4.1.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/lift-json_2.10-2.5-RC4.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/lift-json_2.10-2.5-RC4.jar</binary-origin>
+                <runtime-relative-path>ext/jfreechart-1.0.19-experimental.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jfreechart-1.0.19-experimental.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/scala-library.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/scala-library.jar</binary-origin>
+                <runtime-relative-path>ext/jfreesvg-2.0.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jfreesvg-2.0.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/akka-actor_2.10-2.1.4.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/akka-actor_2.10-2.1.4.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/orsoncharts-1.4-eval-nofx.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/orsoncharts-1.4-eval-nofx.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/junit-4.11.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/junit-4.11.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/swtgraphics2d.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/swtgraphics2d.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/scala-actors.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/scala-actors.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/jcommon-1.0.23.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jcommon-1.0.23.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/scala-compiler.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/scala-compiler.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/scala-reflect.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/scala-reflect.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/SignalCollectSNA.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/SignalCollectSNA.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/akka-remote_2.10-2.1.4.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/akka-remote_2.10-2.1.4.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/akka-actor_2.10-2.1.4.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/akka-actor_2.10-2.1.4.jar</binary-origin>
+                <runtime-relative-path>ext/scala-library.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/scala-library.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/lift-json_2.10-2.5-RC4.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/lift-json_2.10-2.5-RC4.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/servlet.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/servlet.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/hamcrest-core-1.3.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/hamcrest-core-1.3.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/jfreechart-1.0.19.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jfreechart-1.0.19.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/scala-swing.jar</runtime-relative-path>
