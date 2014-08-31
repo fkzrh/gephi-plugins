@@ -5,6 +5,7 @@
  */
 package com.signalcollect.sna.visualization;
 
+import com.signalcollect.sna.GraphProperties;
 import com.signalcollect.sna.gephiconnectors.BetweennessSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.ClosenessSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.DegreeSignalCollectGephiConnectorImpl;
@@ -74,9 +75,9 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         jPanel2 = new javax.swing.JPanel();
         propertyButton = new javax.swing.JButton();
         degreeDistributionButton = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jEditorPane1 = new javax.swing.JEditorPane();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -100,10 +101,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         setAutoscrolls(true);
         setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel1.setBackground(new java.awt.Color(100, 150, 255));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jPanel2.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel2.setBackground(new java.awt.Color(100, 150, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(102, 102, 102)));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
@@ -139,21 +140,6 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
         jPanel2.add(degreeDistributionButton, gridBagConstraints);
 
-        jTextPane2.setEditable(false);
-        jTextPane2.setContentType("text/html"); // NOI18N
-        jTextPane2.setFocusable(false);
-        jScrollPane2.setViewportView(jTextPane2);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weighty = 6.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel2.add(jScrollPane2, gridBagConstraints);
-
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel2.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -166,6 +152,24 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
         jPanel2.add(jLabel2, gridBagConstraints);
 
+        jEditorPane1.setEditable(false);
+
+        jEditorPane1.setContentType("text/html"); // NOI18N
+
+        jEditorPane1.setFocusable(false);
+        jScrollPane3.setViewportView(jEditorPane1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.weighty = 5.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanel2.add(jScrollPane3, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -175,7 +179,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.weighty = 10.0;
         jPanel1.add(jPanel2, gridBagConstraints);
 
-        jPanel3.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel3.setBackground(new java.awt.Color(100, 150, 255));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
@@ -206,7 +210,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(jPanel3, gridBagConstraints);
 
-        jPanel4.setBackground(new java.awt.Color(178, 216, 255));
+        jPanel4.setBackground(new java.awt.Color(100, 150, 255));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
         metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Closeness","Betweenness" }));
@@ -296,10 +300,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }//GEN-LAST:event_metricDropDownActionPerformed
 
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
-        if(scgc == null){
+        if (scgc == null) {
             scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
         }
-        jTextPane2.setText(setPropertyText(scgc.getGraphProperties().toString()));
+        jEditorPane1.setText(setPropertyText(scgc.getGraphProperties()));
     }//GEN-LAST:event_propertyButtonActionPerformed
 
     private void degreeDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degreeDistributionButtonActionPerformed
@@ -320,6 +324,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton degreeDistributionButton;
+    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JLabel jLabel1;
@@ -330,8 +335,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextPane jTextPane3;
     private javax.swing.JComboBox metricDropDown;
     private javax.swing.JButton propertyButton;
@@ -365,10 +369,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 + "<body>"
                 + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:14px;font-weight:normal\">Execution Results</span></h1>"
                 + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Average: </span></h2>\n"
-                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: " + avg + " </span></p><ul>"
+                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is:&nbsp;" + avg + "</span></p><ul>"
                 + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Single Values:</span></h2>";
         for (Map.Entry<String, Object> entry : vertexMap.entrySet()) {
-            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">Vertex id: " + entry.getKey() + "&nbsp Value: " + entry.getValue() + "</span></li>";
+            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">Vertex id:&nbsp;" + entry.getKey() + "&emsp;Value: " + entry.getValue() + "</span></li>";
         }
 
         res += "</ul><p>&nbsp;</p></body></html>";
@@ -376,14 +380,25 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         return res;
     }
 
-    private String setPropertyText(String props) {
-        String res = "<!doctype html><html><head><title>Graph Properties</title><style type=\"text/css\"></style>"
+    private String setPropertyText(GraphProperties props) {
+        String res = "<!doctype html><html><head><title>Graph Properties</title>"
+                + "<style type=\"text/css\">"
+                + "table.tablestyle {border-collapse:collapse}"
+                + "table.tablestyle td {border: 5px solid #FF0000;padding: 5px; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;}"
+                + "table.tablestyle th {border: 5px solid #FF0000;padding: 5px; font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:bold;}"
+                + "</style>"
                 + "</head>"
                 + "<body>"
-                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">" + props + "</span></h1>";
-//                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Size: </span></h2>\n"
-//                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is: </span></p>"
-//                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Nodes:</span></h2></body></html>";
+                + "<table class = \"tablestyle\">"
+                + "<tr><th>Property</th><th>Value</th></tr>"
+                + "<tr><td>Size</td><td>" + props.calcSize() + "</td></tr>"
+                + "<tr><td>Density</td><td>" + props.calcDensity() + "</td></tr>"
+                + "<tr><td>Diameter</td><td>" + props.calcDiameter() + "</td></tr>"
+                + "<tr><td>Reciprocity</td><td>" + props.calcReciprocity() + "</td></tr>"
+                + "</table></body></html>";
+//                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">Graph Size:&emsp;" + props.calcSize() + 
+//                "<br>Density:&emsp;&emsp;&emsp;" + props.calcDensity() +"<br>Diameter:&emsp;&emsp;"+props.calcDiameter()+"<br>Reciprocity:&emsp;"+props.calcReciprocity()+"<br>"
+//                + "</span></h1>";
 
         return res;
     }
