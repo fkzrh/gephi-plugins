@@ -11,9 +11,14 @@ import com.signalcollect.sna.gephiconnectors.ClosenessSignalCollectGephiConnecto
 import com.signalcollect.sna.gephiconnectors.DegreeSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.PageRankSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.SignalCollectGephiConnector;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.util.Map;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -50,6 +55,7 @@ import org.openide.windows.TopComponent;
 public final class SignalCollectSNATopComponent extends TopComponent {
 
     private SignalCollectGephiConnector scgc;
+    private String fileName;
 
     public SignalCollectSNATopComponent() {
         initComponents();
@@ -67,46 +73,49 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jFrame1 = new javax.swing.JFrame();
-        jScrollPane1 = new javax.swing.JScrollPane(jTextPane3);
-        jTextPane3 = new javax.swing.JTextPane();
-        jFrame2 = new javax.swing.JFrame();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        metricResultFrame = new javax.swing.JFrame();
+        metricValuesScrollPane = new javax.swing.JScrollPane(metricValuesTextPane);
+        metricValuesTextPane = new javax.swing.JTextPane();
+        degreeDistributionFrame = new javax.swing.JFrame();
+        mainPanel = new javax.swing.JPanel();
+        propertyPanel = new javax.swing.JPanel();
         propertyButton = new javax.swing.JButton();
         degreeDistributionButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        propertyInfo = new javax.swing.JLabel();
+        propertyDisplay = new javax.swing.JScrollPane();
+        propertyContentDisplay = new javax.swing.JEditorPane();
+        infoPanel = new javax.swing.JPanel();
+        imageLabel = new javax.swing.JLabel();
+        fileChooserButton = new javax.swing.JButton();
+        filePathPane = new javax.swing.JScrollPane();
+        filePathTextPane = new javax.swing.JTextPane();
+        metricPanel = new javax.swing.JPanel();
         metricDropDown = new javax.swing.JComboBox();
         runMetricButton = new javax.swing.JButton();
+        infoTextLabel = new javax.swing.JLabel();
 
-        jTextPane3.setContentType("text/html");
-        jTextPane3.setFocusable(false);
-        jTextPane3.setMargin(new java.awt.Insets(20, 20, 20, 20));
-        jFrame1.getContentPane().add(jTextPane3, java.awt.BorderLayout.CENTER);
-        jScrollPane1.setViewportView(jTextPane3);
+        metricValuesTextPane.setContentType("text/html");
+        metricValuesTextPane.setFocusable(false);
+        metricValuesTextPane.setMargin(new java.awt.Insets(20, 20, 20, 20));
+        metricResultFrame.getContentPane().add(metricValuesTextPane, java.awt.BorderLayout.CENTER);
+        metricValuesScrollPane.setViewportView(metricValuesTextPane);
 
-        jFrame1.getContentPane().add(jScrollPane1, java.awt.BorderLayout.PAGE_START);
+        metricResultFrame.getContentPane().add(metricValuesScrollPane, java.awt.BorderLayout.PAGE_START);
 
-        jFrame1.setContentPane(jScrollPane1);
-        jFrame1.setLocation(50, 50);
+        metricResultFrame.setContentPane(metricValuesScrollPane);
+        metricResultFrame.setLocation(50, 50);
 
-        jFrame2.setLocation(50, 50);
+        degreeDistributionFrame.setLocation(50, 50);
 
         setAutoscrolls(true);
         setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setBackground(new java.awt.Color(100, 150, 255));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        mainPanel.setBackground(new java.awt.Color(100, 150, 255));
+        mainPanel.setLayout(new java.awt.GridBagLayout());
 
-        jPanel2.setBackground(new java.awt.Color(100, 150, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(102, 102, 102)));
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        propertyPanel.setBackground(new java.awt.Color(100, 150, 255));
+        propertyPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        propertyPanel.setLayout(new java.awt.GridBagLayout());
 
         org.openide.awt.Mnemonics.setLocalizedText(propertyButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyButton.text")); // NOI18N
         propertyButton.setAutoscrolls(true);
@@ -122,7 +131,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
-        jPanel2.add(propertyButton, gridBagConstraints);
+        propertyPanel.add(propertyButton, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(degreeDistributionButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.degreeDistributionButton.text")); // NOI18N
         degreeDistributionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -138,10 +147,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
-        jPanel2.add(degreeDistributionButton, gridBagConstraints);
+        propertyPanel.add(degreeDistributionButton, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel2.text")); // NOI18N
+        propertyInfo.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(propertyInfo, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyInfo.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -150,14 +159,14 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
-        jPanel2.add(jLabel2, gridBagConstraints);
+        propertyPanel.add(propertyInfo, gridBagConstraints);
 
-        jEditorPane1.setEditable(false);
+        propertyContentDisplay.setEditable(false);
 
-        jEditorPane1.setContentType("text/html"); // NOI18N
+        propertyContentDisplay.setContentType("text/html"); // NOI18N
 
-        jEditorPane1.setFocusable(false);
-        jScrollPane3.setViewportView(jEditorPane1);
+        propertyContentDisplay.setFocusable(false);
+        propertyDisplay.setViewportView(propertyContentDisplay);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -168,7 +177,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.ipady = 5;
         gridBagConstraints.weighty = 5.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        jPanel2.add(jScrollPane3, gridBagConstraints);
+        propertyPanel.add(propertyDisplay, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -176,42 +185,54 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 10.0;
-        jPanel1.add(jPanel2, gridBagConstraints);
+        gridBagConstraints.weighty = 5.0;
+        mainPanel.add(propertyPanel, gridBagConstraints);
 
-        jPanel3.setBackground(new java.awt.Color(100, 150, 255));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
+        infoPanel.setBackground(new java.awt.Color(100, 150, 255));
+        infoPanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel1.text")); // NOI18N
+        imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sc-logo-white-bg_200px.png")));
+        org.openide.awt.Mnemonics.setLocalizedText(imageLabel, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.imageLabel.text")); // NOI18N
+        imageLabel.setToolTipText(org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.imageLabel.toolTipText")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        infoPanel.add(imageLabel, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(fileChooserButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.fileChooserButton.text")); // NOI18N
+        fileChooserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileChooserButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        infoPanel.add(fileChooserButton, gridBagConstraints);
+
+        filePathPane.setViewportView(filePathTextPane);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        infoPanel.add(filePathPane, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 2.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 0, 15);
-        jPanel3.add(jLabel1, gridBagConstraints);
+        mainPanel.add(infoPanel, gridBagConstraints);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sc-logo-white-bg.png"))); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel3.text")); // NOI18N
-        jLabel3.setToolTipText(org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jLabel3.toolTipText")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(20, 15, 0, 15);
-        jPanel3.add(jLabel3, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel1.add(jPanel3, gridBagConstraints);
-
-        jPanel4.setBackground(new java.awt.Color(100, 150, 255));
-        jPanel4.setLayout(new java.awt.GridBagLayout());
+        metricPanel.setBackground(new java.awt.Color(100, 150, 255));
+        metricPanel.setLayout(new java.awt.GridBagLayout());
 
         metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Closeness","Betweenness" }));
         metricDropDown.setAutoscrolls(true);
@@ -221,14 +242,14 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel4.add(metricDropDown, gridBagConstraints);
+        metricPanel.add(metricDropDown, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(runMetricButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.runMetricButton.text")); // NOI18N
         runMetricButton.setAutoscrolls(true);
@@ -238,61 +259,90 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 4.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        jPanel4.add(runMetricButton, gridBagConstraints);
+        metricPanel.add(runMetricButton, gridBagConstraints);
+
+        infoTextLabel.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(infoTextLabel, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.infoTextLabel.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        metricPanel.add(infoTextLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel1.add(jPanel4, gridBagConstraints);
+        gridBagConstraints.weighty = 1.0;
+        mainPanel.add(metricPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(jPanel1, gridBagConstraints);
+        add(mainPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
-        SignalCollectGephiConnector scgc;
-//       SCText.setText("loading...");
-        String actualMetric = metricDropDown.getSelectedItem().toString();
-        if (actualMetric.equals("Degree")) {
-            scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
-            scgc.executeGraph();
-            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-        } else if (actualMetric.equals("PageRank")) {
-            scgc = new PageRankSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
-            scgc.executeGraph();
-            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-        } else if (actualMetric.equals("Betweenness")) {
-            scgc = new BetweennessSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
-            scgc.executeGraph();
-            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
-        } else if (actualMetric.equals("Closeness")) {
-            scgc = new ClosenessSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
-            scgc.executeGraph();
+        try {
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            if (filePathTextPane.getText() == null) {
+                throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
+            }
+            if (!filePathTextPane.getText().contains(".gml")) {
+                throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
+            }
+            String actualMetric = metricDropDown.getSelectedItem().toString();
+            if (actualMetric.equals("Degree")) {
+                scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
+                scgc.executeGraph();
+                metricValuesTextPane.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            } else if (actualMetric.equals("PageRank")) {
+                scgc = new PageRankSignalCollectGephiConnectorImpl(fileName);
+                scgc.executeGraph();
+                metricValuesTextPane.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            } else if (actualMetric.equals("Betweenness")) {
+                scgc = new BetweennessSignalCollectGephiConnectorImpl(fileName);
+                scgc.executeGraph();
+                metricValuesTextPane.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            } else if (actualMetric.equals("Closeness")) {
+                scgc = new ClosenessSignalCollectGephiConnectorImpl(fileName);
+                scgc.executeGraph();
 
-            jTextPane3.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+                metricValuesTextPane.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            } else {
+                throw new IllegalArgumentException("invalid Signal/Collect metric chosen!\nPlease try again");
+            }
+            Dimension dim = new Dimension(750, 450);
+            metricResultFrame.setMinimumSize(dim);
+            metricResultFrame.pack();
+            metricValuesTextPane.setVisible(true);
+            metricValuesScrollPane.setVisible(true);
+            metricResultFrame.setVisible(true);
+        } catch (Exception exception) {
+            JFrame messageFrame = new JFrame();
+            String exceptionMessage = "";
+            if (exception instanceof IllegalArgumentException) {
+                exceptionMessage = exception.getMessage();
+            } else {
+                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
+            }
+            JOptionPane.showMessageDialog(messageFrame,
+                    exceptionMessage,
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } finally {
+            mainPanel.setCursor(Cursor.getDefaultCursor());
         }
-//        jScrollPane1.add(jTextPane1);
-//        jDialog1.pack();
-        Dimension dim = new Dimension(750, 450);
-//        jFrame1.add(jTextPane1);
-//        JScrollPane bla = new JScrollPane(jTextPane1);
-//        jFrame1.add(bla);
-
-        jFrame1.setMinimumSize(dim);
-        jFrame1.pack();
-        jTextPane3.setVisible(true);
-        jScrollPane1.setVisible(true);
-        jFrame1.setVisible(true);
     }//GEN-LAST:event_runMetricButtonActionPerformed
 
     private void metricDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_metricDropDownActionPerformed
@@ -300,45 +350,101 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }//GEN-LAST:event_metricDropDownActionPerformed
 
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
-        if (scgc == null) {
-            scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
+        try {
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            if (filePathTextPane.getText() == null) {
+                throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
+            }
+            if (!filePathTextPane.getText().contains(".gml")) {
+                throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
+            }
+            if (scgc == null) {
+                scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
+            }
+            propertyContentDisplay.setText(setPropertyText(scgc.getGraphProperties()));
+        } catch (Exception exception) {
+            JFrame messageFrame = new JFrame();
+            String exceptionMessage = "";
+            if (exception instanceof IllegalArgumentException) {
+                exceptionMessage = exception.getMessage();
+            } else {
+                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
+            }
+            JOptionPane.showMessageDialog(messageFrame,
+                    exceptionMessage,
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } finally {
+            mainPanel.setCursor(Cursor.getDefaultCursor());
         }
-        jEditorPane1.setText(setPropertyText(scgc.getGraphProperties()));
     }//GEN-LAST:event_propertyButtonActionPerformed
 
     private void degreeDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degreeDistributionButtonActionPerformed
-        scgc = new DegreeSignalCollectGephiConnectorImpl("/Users/flaviokeller/Desktop/power.gml");
         try {
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            if (filePathTextPane.getText() == null) {
+                throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
+            }
+            if (!filePathTextPane.getText().contains(".gml")) {
+                throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
+            }
+            scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
             JFreeChart chart = scgc.createImageFile(scgc.getDegreeDistrbution().degreeDistribution());
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
-            jFrame2.setMinimumSize(dim);
-            jFrame2.add(chartPanel);
+            degreeDistributionFrame.setMinimumSize(dim);
+            degreeDistributionFrame.add(chartPanel);
 
-            jFrame2.pack();
-            jFrame2.setVisible(true);
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
+            degreeDistributionFrame.pack();
+            degreeDistributionFrame.setVisible(true);
+        } catch (Exception exception) {
+            JFrame messageFrame = new JFrame();
+            String exceptionMessage = "";
+            if (exception instanceof IllegalArgumentException) {
+                exceptionMessage = exception.getMessage();
+            } else {
+                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
+            }
+            JOptionPane.showMessageDialog(messageFrame,
+                    exceptionMessage,
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } finally {
+            mainPanel.setCursor(Cursor.getDefaultCursor());
         }
     }//GEN-LAST:event_degreeDistributionButtonActionPerformed
 
+    private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Graph Files", "gml");
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(filter);
+        chooser.showOpenDialog(null);
+        if (chooser.getSelectedFile() != null) {
+            fileName = chooser.getSelectedFile().getAbsolutePath();
+            filePathTextPane.setText(fileName);
+        }
+    }//GEN-LAST:event_fileChooserButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton degreeDistributionButton;
-    private javax.swing.JEditorPane jEditorPane1;
-    private javax.swing.JFrame jFrame1;
-    private javax.swing.JFrame jFrame2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextPane jTextPane3;
+    private javax.swing.JFrame degreeDistributionFrame;
+    private javax.swing.JButton fileChooserButton;
+    private javax.swing.JScrollPane filePathPane;
+    private javax.swing.JTextPane filePathTextPane;
+    private javax.swing.JLabel imageLabel;
+    private javax.swing.JPanel infoPanel;
+    private javax.swing.JLabel infoTextLabel;
+    private javax.swing.JPanel mainPanel;
     private javax.swing.JComboBox metricDropDown;
+    private javax.swing.JPanel metricPanel;
+    private javax.swing.JFrame metricResultFrame;
+    private javax.swing.JScrollPane metricValuesScrollPane;
+    private javax.swing.JTextPane metricValuesTextPane;
     private javax.swing.JButton propertyButton;
+    private javax.swing.JEditorPane propertyContentDisplay;
+    private javax.swing.JScrollPane propertyDisplay;
+    private javax.swing.JLabel propertyInfo;
+    private javax.swing.JPanel propertyPanel;
     private javax.swing.JButton runMetricButton;
     // End of variables declaration//GEN-END:variables
     @Override
@@ -367,12 +473,12 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         String res = "<!doctype html><html><head><title>Execution Results</title><style type=\"text/css\"></style>"
                 + "</head>"
                 + "<body>"
-                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:14px;font-weight:normal\">Execution Results</span></h1>"
-                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Average: </span></h2>\n"
-                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">The average value of the vertices is:&nbsp;" + avg + "</span></p><ul>"
-                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal;\">Single Values:</span></h2>";
+                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal\">Execution Results</span></h1>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">Average: </span></h2>\n"
+                + "<p><span style=\"font-family:verdana,geneva,sans-serif;font-size:10px;\">The average value of the vertices is:&nbsp;" + avg + "</span></p><ul>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">Single Values:</span></h2>";
         for (Map.Entry<String, Object> entry : vertexMap.entrySet()) {
-            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;\">Vertex id:&nbsp;" + entry.getKey() + "&emsp;Value: " + entry.getValue() + "</span></li>";
+            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:10px;\">Vertex id:&nbsp;" + entry.getKey() + "&emsp;Value: " + entry.getValue() + "</span></li>";
         }
 
         res += "</ul><p>&nbsp;</p></body></html>";
@@ -384,8 +490,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         String res = "<!doctype html><html><head><title>Graph Properties</title>"
                 + "<style type=\"text/css\">"
                 + "table.tablestyle {border-collapse:collapse}"
-                + "table.tablestyle td {border: 5px solid #FF0000;padding: 5px; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;}"
-                + "table.tablestyle th {border: 5px solid #FF0000;padding: 5px; font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:bold;}"
+                + "table.tablestyle td {border: 2px solid #FF0000;padding: 2px; font-family:verdana,geneva,sans-serif;font-size:10px;font-weight:normal;}"
+                + "table.tablestyle th {border: 2px solid #FF0000;padding: 2px; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;}"
                 + "</style>"
                 + "</head>"
                 + "<body>"
@@ -396,9 +502,6 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 + "<tr><td>Diameter</td><td>" + props.calcDiameter() + "</td></tr>"
                 + "<tr><td>Reciprocity</td><td>" + props.calcReciprocity() + "</td></tr>"
                 + "</table></body></html>";
-//                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">Graph Size:&emsp;" + props.calcSize() + 
-//                "<br>Density:&emsp;&emsp;&emsp;" + props.calcDensity() +"<br>Diameter:&emsp;&emsp;"+props.calcDiameter()+"<br>Reciprocity:&emsp;"+props.calcReciprocity()+"<br>"
-//                + "</span></h1>";
 
         return res;
     }
