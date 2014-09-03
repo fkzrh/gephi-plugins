@@ -87,8 +87,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         infoPanel = new javax.swing.JPanel();
         imageLabel = new javax.swing.JLabel();
         fileChooserButton = new javax.swing.JButton();
-        filePathPane = new javax.swing.JScrollPane();
-        filePathTextPane = new javax.swing.JTextPane();
+        filePathScrollPane = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         metricPanel = new javax.swing.JPanel();
         metricDropDown = new javax.swing.JComboBox();
         runMetricButton = new javax.swing.JButton();
@@ -211,22 +211,27 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         infoPanel.add(fileChooserButton, gridBagConstraints);
 
-        filePathPane.setViewportView(filePathTextPane);
+        filePathScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        filePathScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(1);
+        filePathScrollPane.setViewportView(jTextArea1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
-        infoPanel.add(filePathPane, gridBagConstraints);
+        infoPanel.add(filePathScrollPane, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
         mainPanel.add(infoPanel, gridBagConstraints);
@@ -295,10 +300,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
         try {
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            if (filePathTextPane.getText() == null) {
+            if (jTextArea1.getText() == null) {
                 throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
             }
-            if (!filePathTextPane.getText().contains(".gml")) {
+            if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             String actualMetric = metricDropDown.getSelectedItem().toString();
@@ -352,10 +357,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
         try {
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            if (filePathTextPane.getText() == null) {
+            if (jTextArea1.getText() == null) {
                 throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
             }
-            if (!filePathTextPane.getText().contains(".gml")) {
+            if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             if (scgc == null) {
@@ -382,10 +387,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void degreeDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degreeDistributionButtonActionPerformed
         try {
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            if (filePathTextPane.getText() == null) {
+            if (jTextArea1.getText() == null) {
                 throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
             }
-            if (!filePathTextPane.getText().contains(".gml")) {
+            if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
@@ -421,7 +426,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         chooser.showOpenDialog(null);
         if (chooser.getSelectedFile() != null) {
             fileName = chooser.getSelectedFile().getAbsolutePath();
-            filePathTextPane.setText(fileName);
+            jTextArea1.setText(fileName);
+//            filePathTextPane.setText(fileName);
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
@@ -429,11 +435,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private javax.swing.JButton degreeDistributionButton;
     private javax.swing.JFrame degreeDistributionFrame;
     private javax.swing.JButton fileChooserButton;
-    private javax.swing.JScrollPane filePathPane;
-    private javax.swing.JTextPane filePathTextPane;
+    private javax.swing.JScrollPane filePathScrollPane;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel infoTextLabel;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JComboBox metricDropDown;
     private javax.swing.JPanel metricPanel;
