@@ -143,7 +143,6 @@ made subject to such option by the copyright holder.
                 </presetdef>
             </sequential>
         </macrodef>
-        <custom-javac-presetdef javacval="${nbjdk.javac}"/>
     </target>
 
     <target name="-javac-init-bootclasspath-prepend" depends="build-init" if="bootclasspath.prepend">
@@ -214,8 +213,11 @@ made subject to such option by the copyright holder.
         <depend srcdir="${src.dir}" destdir="${build.classes.dir}" cache="${build.dir}/depcache">
             <classpath refid="cp"/>
         </depend>
+        <property name="javac.fork" value="false"/>
         <nb-javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="${build.compiler.debug}" debuglevel="${build.compiler.debuglevel}" encoding="UTF-8"
-                  deprecation="${build.compiler.deprecation}" optimize="${build.compiler.optimize}" source="${javac.source}" target="${javac.target}" includeantruntime="false">
+                  deprecation="${build.compiler.deprecation}" optimize="${build.compiler.optimize}" source="${javac.source}" target="${javac.target}" includeantruntime="false"
+                  fork="${javac.fork}"
+        >
             <classpath refid="cp"/>
             <compilerarg line="${javac.compilerargs}"/>
             <processorpath refid="processor.cp"/>
@@ -228,11 +230,20 @@ made subject to such option by the copyright holder.
     <target name="compile-single" depends="init">
         <fail unless="javac.includes">Must select some files in the IDE or set javac.includes</fail>
         <mkdir dir="${build.classes.dir}"/>
-        <!-- XXX consider forcing debug=true and deprecation=true -->
-        <!-- XXX consider deleting the .class file first to force a rebuild -->
-        <depend srcdir="${src.dir}" destdir="${build.classes.dir}" cache="${build.dir}/depcache">
-            <classpath refid="cp"/>
-        </depend>
+        <pathconvert pathsep="${line.separator}" property="javac.includes.binary">
+            <path>
+                <filelist dir="${build.classes.dir}" files="${javac.includes}"/>
+            </path>
+            <globmapper from="*.java" to="*.class"/>
+        </pathconvert>
+        <tempfile deleteonexit="true" property="javac.includesfile.binary"/>
+        <echo file="${javac.includesfile.binary}" message="${javac.includes.binary}"/>
+        <delete>
+            <files includesfile="${javac.includesfile.binary}"/>
+        </delete>
+        <delete>
+            <fileset file="${javac.includesfile.binary}"/>
+        </delete>
         <nb-javac srcdir="${src.dir}" destdir="${build.classes.dir}"
                   debug="${build.compiler.debug}" deprecation="${build.compiler.deprecation}" encoding="UTF-8"
                   source="${javac.source}" target="${javac.target}" includes="${javac.includes}" optimize="${build.compiler.optimize}" includeantruntime="false">
@@ -313,10 +324,10 @@ made subject to such option by the copyright holder.
     </target>
 
     <target name="verify-class-linkage" depends="jar,release">
-        <verifyclasslinkage jar="${cluster}/${module.jar}" failonerror="false" ignores="${module.jar.verifylinkageignores}" maxwarnings="10">
+<!--        <verifyclasslinkage jar="${cluster}/${module.jar}" failonerror="false" ignores="${module.jar.verifylinkageignores}" maxwarnings="10">
             <classpath refid="cp"/>
             <classpath path="${nbjdk.bootclasspath}"/>
-        </verifyclasslinkage>
+        </verifyclasslinkage>-->
     </target>
 
     <target name="-verify-apichanges"/><!-- just for overriding -->
@@ -433,6 +444,7 @@ made subject to such option by the copyright holder.
         <property name="license.file.override" value="${license.file}"/>
         <property name="use.pack200" value="true"/>
         <property name="pack200.excludes" value=""/>
+        <property name="nbm.locales" value="${locales}"/>
         <makenbm file="${build.dir}/${nbm}"
                  productdir="${cluster}"
                  module="${module.jar}"
@@ -445,7 +457,9 @@ made subject to such option by the copyright holder.
                  pack200excludes="${pack200.excludes}"
                  targetcluster="${nbm.target.cluster}"
                  releasedate="${nbm.release.date}"
-                 moduleauthor="${nbm.module.author}">
+                 moduleauthor="${nbm.module.author}"
+                 locales="${nbm.locales}"
+                 >
             <license file="${license.file.override}"/>
             <signature keystore="${keystore}" storepass="${storepass}" alias="${nbm_alias}"/>
             <updaterjar>
@@ -466,7 +480,7 @@ made subject to such option by the copyright holder.
         <condition property="test.bootclasspath.prepend.args" value="-Xbootclasspath/p:${bootclasspath.prepend}">
             <isset property="bootclasspath.prepend"/>
         </condition>
-        <property name="test.bootclasspath.prepend.args" value=""/>
+        <property name="test.bootclasspath.prepend.args" value="-Dno.netbeans.bootclasspath.prepend.needed=true"/>
         <macrodef name="test-init">
             <attribute name="test.type"/>
             <sequential>
@@ -674,7 +688,7 @@ made subject to such option by the copyright holder.
                     </batchtest>
                     <classpath refid="test.@{test.type}.run.cp"/>
                     <syspropertyset refid="test.@{test.type}.properties"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${test.run.args}"/>
                     <!--needed to have tests NOT to steal focus when running, works in latest apple jdk update only.-->
                     <sysproperty key="apple.awt.UIElement" value="@{disable.apple.ui}"/>
@@ -698,11 +712,12 @@ made subject to such option by the copyright holder.
                         outputdir="${build.test.@{test.type}.results.dir}"
                         workingDir="${build.test.@{test.type}.results.dir}"
                         suitename="${code.name.base}"
+			listener="org.testng.reporters.VerboseReporter"
                 >
                     <classfileset dir="${build.test.@{test.type}.classes.dir}" excludes="${test.excludes}" includes="${test.includes}"/>
                     <propertyset refid="test.@{test.type}.properties"/>
                     <classpath refid="test.@{test.type}.run.cp"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${test.run.args}"/>
                     <!-- needed to have tests NOT to steal focus when running, works in latest apple jdk update only.-->
                     <sysproperty key="apple.awt.UIElement" value="@{disable.apple.ui}"/>
@@ -748,7 +763,10 @@ made subject to such option by the copyright holder.
                 <condition property="test.runner" value ="testng" else="junit">
                     <available classname="org.testng.annotations.Test" classpath="${test.@{test.type}.runtime.cp}"/>
                 </condition>
-                <antcall target="-do-${test.runner}-single">
+                <condition property="is.test.suite" value ="-suite" else="">
+                    <contains string="${test.includes}" substring=".xml"/>
+                </condition>
+                <antcall target="-do-${test.runner}-single${is.test.suite}">
                     <param name="test.type" value="@{test.type}"/>
                 </antcall>
             </sequential>
@@ -770,7 +788,7 @@ made subject to such option by the copyright holder.
                     <classpath refid="test.@{test.type}.run.cp"/>
                     <syspropertyset refid="test.@{test.type}.properties"/>
                     <jvmarg line="${test.run.args}"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${run.args.ide}"/>
                     <jvmarg line="${run.jvmargs.ide}"/>
                     <formatter type="brief" usefile="false"/>
@@ -794,10 +812,38 @@ made subject to such option by the copyright holder.
                          outputdir="${build.test.@{test.type}.results.dir}"
                          workingDir="${build.test.@{test.type}.results.dir}"
                          suitename="${code.name.base}"
+			 listener="org.testng.reporters.VerboseReporter"
                 >
                     <propertyset refid="test.@{test.type}.properties"/>
                     <classpath refid="test.@{test.type}.run.cp"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg line="${test.run.args}"/>
+                    <!-- needed to have tests NOT to steal focus when running, works in latest apple jdk update only.-->
+                    <sysproperty key="apple.awt.UIElement" value="@{disable.apple.ui}"/>
+                </testng>
+                <fail if="tests.failed" unless="continue.after.failing.tests">Some tests failed; see details above.</fail>
+            </sequential>
+        </macrodef>
+        <testng-impl test.type="${test.type}"/>
+    </target>
+
+    <target name="-do-testng-single-suite" depends="test-init">
+        <macrodef name="testng-impl">
+            <attribute name="test.type"/>
+            <sequential>
+                <fileset id="testng.test" dir="${test.@{test.type}.src.dir}" includes="${test.includes}"/>
+                <taskdef name="testng" classname="org.testng.TestNGAntTask" classpathref="test.@{test.type}.run.cp"/>
+                <testng  mode="mixed"
+                         xmlfilesetref="testng.test"
+                         failureProperty="tests.failed"
+                         outputdir="${build.test.@{test.type}.results.dir}"
+                         workingDir="${build.test.@{test.type}.results.dir}"
+                         suitename="${code.name.base}"
+			 listener="org.testng.reporters.VerboseReporter"
+                >
+                    <propertyset refid="test.@{test.type}.properties"/>
+                    <classpath refid="test.@{test.type}.run.cp"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${test.run.args}"/>
                     <!-- needed to have tests NOT to steal focus when running, works in latest apple jdk update only.-->
                     <sysproperty key="apple.awt.UIElement" value="@{disable.apple.ui}"/>
@@ -817,7 +863,10 @@ made subject to such option by the copyright holder.
                 <condition property="test.runner" value ="testng" else="junit">
                     <available classname="org.testng.annotations.Test" classpath="${test.@{test.type}.runtime.cp}"/>
                 </condition>
-                <antcall target="-do-${test.runner}-debug-single">
+                <condition property="is.test.suite" value ="-suite" else="">
+                    <contains string="${test.class}" substring=".xml"/>
+                </condition>
+                <antcall target="-do-${test.runner}-debug-single${is.test.suite}">
                     <param name="test.type" value="@{test.type}"/>
                 </antcall>
             </sequential>
@@ -847,7 +896,7 @@ made subject to such option by the copyright holder.
                         <pathelement location="${ant.home}/lib/ant-junit.jar"/>
                         <pathelement location="${ant.home}/lib/ant-junit4.jar"/>
                     </classpath>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <syspropertyset refid="test.@{test.type}.properties"/>
                     <arg value="${test.class}"/>
                     <arg value="showoutput=true"/>
@@ -875,7 +924,7 @@ made subject to such option by the copyright holder.
                     <jvmarg value="-Xdebug"/>
                     <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
                     <jvmarg line="${test.run.args}"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <classpath refid="test.@{test.type}.run.cp"/>
                     <syspropertyset refid="test.@{test.type}.properties"/>
                     <jvmarg value="-ea"/>
@@ -892,12 +941,41 @@ made subject to such option by the copyright holder.
                     <classfileset dir="${build.test.@{test.type}.classes.dir}" excludes="${test.excludes}" includes="**/*Test.class"/>
                     <propertyset refid="test.@{test.type}.properties"/>
                     <classpath refid="test.@{test.type}.run.cp"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${test.run.args}"/>
                     <jvmarg value="-Xdebug"/>
                     <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
                 </testng>
                 -->
+            </sequential>
+        </macrodef>
+        <testng-impl test.type="${test.type}"/>
+    </target>
+
+    <target name="-do-testng-debug-single-suite" depends="test-init">
+        <macrodef name="testng-impl">
+            <attribute name="test.type"/>
+            <sequential>
+                <fileset id="testng.test" dir="${test.@{test.type}.src.dir}" includes="${test.class}"/>
+                <taskdef name="testng" classname="org.testng.TestNGAntTask" classpathref="test.@{test.type}.run.cp"/>
+                <testng  mode="mixed"
+                         xmlfilesetref="testng.test"
+                         failureProperty="tests.failed"
+                         outputdir="${build.test.@{test.type}.results.dir}"
+                         workingDir="${build.test.@{test.type}.results.dir}"
+                         suitename="${code.name.base}"
+			 listener="org.testng.reporters.VerboseReporter"
+                >
+                    <propertyset refid="test.@{test.type}.properties"/>
+                    <classpath refid="test.@{test.type}.run.cp"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg line="${test.run.args}"/>
+                    <jvmarg value="-Xdebug"/>
+                    <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+                    <!-- needed to have tests NOT to steal focus when running, works in latest apple jdk update only.-->
+                    <sysproperty key="apple.awt.UIElement" value="@{disable.apple.ui}"/>
+                </testng>
+                <fail if="tests.failed" unless="continue.after.failing.tests">Some tests failed; see details above.</fail>
             </sequential>
         </macrodef>
         <testng-impl test.type="${test.type}"/>
@@ -954,7 +1032,7 @@ made subject to such option by the copyright holder.
                     <classpath refid="test.@{test.type}.run.cp"/>
                     <syspropertyset refid="test.@{test.type}.properties"/>
                     <jvmarg line="${test.run.args}"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${run.jvmargs.ide}"/>
                     <formatter type="brief" usefile="false"/>
                     <formatter type="xml"/>
@@ -976,10 +1054,11 @@ made subject to such option by the copyright holder.
                         outputdir="${build.test.@{test.type}.results.dir}"
                         workingDir="${build.test.@{test.type}.results.dir}"
                         suitename="${code.name.base}"
+			listener="org.testng.reporters.VerboseReporter"
                 >
                     <propertyset refid="test.@{test.type}.properties"/>
                     <classpath refid="test.@{test.type}.run.cp"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <jvmarg line="${test.run.args}"/>
                     <!-- needed to have tests NOT to steal focus when running, works in latest apple jdk update only.-->
                     <sysproperty key="apple.awt.UIElement" value="@{disable.apple.ui}"/>
@@ -1102,7 +1181,7 @@ made subject to such option by the copyright holder.
                     <jvmarg line="${profiler.info.jvmargs}"/>
                     <test name="${profile.class}" todir="${build.test.@{test.type}.results.dir}"/>
                     <classpath refid="test.@{test.type}.run.cp"/>
-                    <jvmarg line="${test.bootclasspath.prepend.args}"/>
+                    <jvmarg value="${test.bootclasspath.prepend.args}"/>
                     <syspropertyset refid="test.@{test.type}.properties"/>
                     <jvmarg line="${test.run.args}"/>
                     <formatter type="brief" usefile="false"/>
@@ -1127,7 +1206,14 @@ made subject to such option by the copyright holder.
 
     <target name="-javadoc-init" depends="init">
         <!-- #71884: default Javadoc title and header -->
-        <property file="${manifest.mf}" prefix="mf."/>
+        <loadproperties srcFile="${manifest.mf}" prefix="mf.">
+            <filterchain>
+                <replaceregex pattern="[\n\r]+ ([^ ][^\n\r]*)"
+                            replace="\1"
+                            flags="g"
+                            byline="false"/>
+            </filterchain>
+        </loadproperties>
         <property file="${src.dir}/${mf.OpenIDE-Module-Localizing-Bundle}" prefix="bundle."/>
         <condition property="javadoc.title" value="${bundle.OpenIDE-Module-Name}">
             <isset property="bundle.OpenIDE-Module-Name"/>
@@ -1220,6 +1306,14 @@ made subject to such option by the copyright holder.
             <replace codenamebase="org.openide.util" addcompiletime="true" >
                 <module codenamebase="org.openide.util" spec="8.0"/>
                 <module codenamebase="org.openide.util.lookup" spec="8.0"/>
+            </replace>
+            <replace codenamebase="org.openide.nodes" addcompiletime="true" >
+                <module codenamebase="org.openide.nodes" spec="7.23"/>
+                <module codenamebase="org.openide.awt" spec="7.33"/>
+            </replace>
+            <replace codenamebase="org.openide.filesystems" addcompiletime="true" >
+                <module codenamebase="org.openide.filesystems" spec="8.0"/>
+                <module codenamebase="org.openide.util.lookup" spec="8.16"/>
             </replace>
 
             <fileset dir="nbproject" >
