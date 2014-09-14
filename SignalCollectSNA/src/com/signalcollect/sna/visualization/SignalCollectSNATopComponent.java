@@ -77,6 +77,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricValuesScrollPane = new javax.swing.JScrollPane(metricValuesTextPane);
         metricValuesTextPane = new javax.swing.JTextPane();
         degreeDistributionFrame = new javax.swing.JFrame();
+        jFrame1 = new javax.swing.JFrame();
+        jScrollPane1 = new javax.swing.JScrollPane();
         mainPanel = new javax.swing.JPanel();
         propertyPanel = new javax.swing.JPanel();
         propertyButton = new javax.swing.JButton();
@@ -84,6 +86,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         propertyInfo = new javax.swing.JLabel();
         propertyDisplay = new javax.swing.JScrollPane();
         propertyContentDisplay = new javax.swing.JEditorPane();
+        jButton1 = new javax.swing.JButton();
         infoPanel = new javax.swing.JPanel();
         imageLabel = new javax.swing.JLabel();
         fileChooserButton = new javax.swing.JButton();
@@ -106,6 +109,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricResultFrame.setLocation(50, 50);
 
         degreeDistributionFrame.setLocation(50, 50);
+
+        jFrame1.getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         setAutoscrolls(true);
         setLayout(new java.awt.GridBagLayout());
@@ -178,6 +183,14 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.weighty = 5.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         propertyPanel.add(propertyDisplay, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jButton1.text")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        propertyPanel.add(jButton1, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -394,7 +407,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
-            JFreeChart chart = scgc.createImageFile(scgc.getDegreeDistrbution().degreeDistribution());
+            JFreeChart chart = scgc.createDegreeDistributionImageFile(scgc.getDegreeDistribution(),"DegreeDistribution.png");
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
             degreeDistributionFrame.setMinimumSize(dim);
@@ -431,6 +444,10 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton degreeDistributionButton;
     private javax.swing.JFrame degreeDistributionFrame;
@@ -439,6 +456,9 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private javax.swing.JLabel imageLabel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel infoTextLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JComboBox metricDropDown;
@@ -496,8 +516,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         String res = "<!doctype html><html><head><title>Graph Properties</title>"
                 + "<style type=\"text/css\">"
                 + "table.tablestyle {border-collapse:collapse}"
-                + "table.tablestyle td {border: 2px solid #FF0000;padding: 2px; font-family:verdana,geneva,sans-serif;font-size:10px;font-weight:normal;}"
-                + "table.tablestyle th {border: 2px solid #FF0000;padding: 2px; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;}"
+                + "table.tablestyle td {border: 2px solid #000000; font-family:verdana,geneva,sans-serif;font-size:10px;font-weight:normal;}"
+                + "table.tablestyle th {border: 2px solid #000000; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;}"
                 + "</style>"
                 + "</head>"
                 + "<body>"
