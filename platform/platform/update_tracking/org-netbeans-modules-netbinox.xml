@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module codename="org.netbeans.modules.netbinox">
-    <module_version install_time="1357231476059" last="true" origin="Ant" specification_version="1.26.2">
+<?xml version="1.0" encoding="UTF-8"?><module codename="org.netbeans.modules.netbinox">
+    <module_version install_time="1411647819530" last="true" origin="Ant" specification_version="1.26.2">
         <file crc="1239713765" name="modules/locale/org-netbeans-modules-netbinox_ja.jar"/>
         <file crc="1160711264" name="modules/locale/org-netbeans-modules-netbinox_pt_BR.jar"/>
         <file crc="764761961" name="modules/locale/org-netbeans-modules-netbinox_ru.jar"/>
