@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module codename="org.gephi.visualization">
+    <module_version install_time="1333042057830" last="false" origin="installer" specification_version="0.8.0.9">
+        <file crc="3681226920" name="config/Modules/org-gephi-visualization.xml"/>
+        <file crc="3575630848" name="modules/org-gephi-visualization.jar"/>
+    </module_version>
+    <module_version install_time="1402224822022" last="true" origin="updater" specification_version="0.8.1.1">
+        <file crc="3681226920" name="config/Modules/org-gephi-visualization.xml"/>
+        <file crc="3574136667" name="modules/org-gephi-visualization.jar"/>
+    </module_version>
+</module>
