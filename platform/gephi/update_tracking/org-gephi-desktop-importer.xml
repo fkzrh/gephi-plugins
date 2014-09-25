@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module codename="org.gephi.desktop.importer">
+    <module_version install_time="1333042052549" last="false" origin="installer" specification_version="0.8.0.1">
+        <file crc="3581440068" name="config/Modules/org-gephi-desktop-importer.xml"/>
+        <file crc="41916040" name="modules/org-gephi-desktop-importer.jar"/>
+    </module_version>
+    <module_version install_time="1402224821014" last="true" origin="updater" specification_version="0.8.0.4">
+        <file crc="3581440068" name="config/Modules/org-gephi-desktop-importer.xml"/>
+        <file crc="3766070806" name="modules/org-gephi-desktop-importer.jar"/>
+    </module_version>
+</module>

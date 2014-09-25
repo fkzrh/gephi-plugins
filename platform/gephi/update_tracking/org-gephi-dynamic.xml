@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module codename="org.gephi.dynamic">
+    <module_version install_time="1333042054325" last="false" origin="installer" specification_version="0.8.0.5">
+        <file crc="2255637323" name="config/Modules/org-gephi-dynamic.xml"/>
+        <file crc="3103578139" name="modules/org-gephi-dynamic.jar"/>
+    </module_version>
+    <module_version install_time="1402224820954" last="true" origin="updater" specification_version="0.8.0.6">
+        <file crc="2255637323" name="config/Modules/org-gephi-dynamic.xml"/>
+        <file crc="3881533243" name="modules/org-gephi-dynamic.jar"/>
+    </module_version>
+</module>

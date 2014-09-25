@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <module codename="org.gephi.desktop.preview">
-    <module_version install_time="1357231593676" last="true" origin="Ant" specification_version="0.8.2">
+    <module_version install_time="1333042065692" last="false" origin="installer" specification_version="0.8.1.6">
         <file crc="2416081230" name="config/Modules/org-gephi-desktop-preview.xml"/>
-        <file crc="3250360422" name="modules/org-gephi-desktop-preview.jar"/>
+        <file crc="895463303" name="modules/org-gephi-desktop-preview.jar"/>
+    </module_version>
+    <module_version install_time="1402224820733" last="true" origin="updater" specification_version="0.8.1.9">
+        <file crc="2416081230" name="config/Modules/org-gephi-desktop-preview.xml"/>
+        <file crc="2051056443" name="modules/org-gephi-desktop-preview.jar"/>
     </module_version>
 </module>
