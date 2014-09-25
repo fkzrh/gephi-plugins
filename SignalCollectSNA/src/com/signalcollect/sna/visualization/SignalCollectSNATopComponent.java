@@ -13,7 +13,6 @@ import com.signalcollect.sna.gephiconnectors.PageRankSignalCollectGephiConnector
 import com.signalcollect.sna.gephiconnectors.SignalCollectGephiConnector;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.io.IOException;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
