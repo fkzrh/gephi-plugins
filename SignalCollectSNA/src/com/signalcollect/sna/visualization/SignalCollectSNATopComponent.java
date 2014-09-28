@@ -9,6 +9,8 @@ import com.signalcollect.sna.GraphProperties;
 import com.signalcollect.sna.gephiconnectors.BetweennessSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.ClosenessSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.DegreeSignalCollectGephiConnectorImpl;
+import com.signalcollect.sna.gephiconnectors.LabelPropagationSignalCollectGephiConnectorImpl;
+import com.signalcollect.sna.gephiconnectors.LocalClusterCoefficientSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.PageRankSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.SignalCollectGephiConnector;
 import java.awt.Cursor;
@@ -75,17 +77,15 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricResultFrame = new javax.swing.JFrame();
         metricValuesScrollPane = new javax.swing.JScrollPane(metricValuesTextPane);
         metricValuesTextPane = new javax.swing.JTextPane();
-        degreeDistributionFrame = new javax.swing.JFrame();
+        distributionFrame = new javax.swing.JFrame();
         jFrame1 = new javax.swing.JFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
         mainPanel = new javax.swing.JPanel();
         propertyPanel = new javax.swing.JPanel();
         propertyButton = new javax.swing.JButton();
-        degreeDistributionButton = new javax.swing.JButton();
         propertyInfo = new javax.swing.JLabel();
         propertyDisplay = new javax.swing.JScrollPane();
         propertyContentDisplay = new javax.swing.JEditorPane();
-        jButton1 = new javax.swing.JButton();
         infoPanel = new javax.swing.JPanel();
         imageLabel = new javax.swing.JLabel();
         fileChooserButton = new javax.swing.JButton();
@@ -95,6 +95,15 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricDropDown = new javax.swing.JComboBox();
         runMetricButton = new javax.swing.JButton();
         infoTextLabel = new javax.swing.JLabel();
+        distributionPanel = new javax.swing.JPanel();
+        degreeDistributionButton = new javax.swing.JButton();
+        distributionInfo = new javax.swing.JLabel();
+        clusterDistributionButton = new javax.swing.JButton();
+        labelPropagationPanel = new javax.swing.JPanel();
+        labelPropagationButton = new javax.swing.JButton();
+        labelPropagationInfo = new javax.swing.JLabel();
+        stepNumberPane = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
 
         metricValuesTextPane.setContentType("text/html");
         metricValuesTextPane.setFocusable(false);
@@ -107,7 +116,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricResultFrame.setContentPane(metricValuesScrollPane);
         metricResultFrame.setLocation(50, 50);
 
-        degreeDistributionFrame.setLocation(50, 50);
+        distributionFrame.setLocation(50, 50);
 
         jFrame1.getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -118,7 +127,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         mainPanel.setLayout(new java.awt.GridBagLayout());
 
         propertyPanel.setBackground(new java.awt.Color(100, 150, 255));
-        propertyPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(102, 102, 102)));
+        propertyPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 102, 102)));
         propertyPanel.setLayout(new java.awt.GridBagLayout());
 
         org.openide.awt.Mnemonics.setLocalizedText(propertyButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyButton.text")); // NOI18N
@@ -137,28 +146,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
         propertyPanel.add(propertyButton, gridBagConstraints);
 
-        org.openide.awt.Mnemonics.setLocalizedText(degreeDistributionButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.degreeDistributionButton.text")); // NOI18N
-        degreeDistributionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        degreeDistributionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                degreeDistributionButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 15, 0, 15);
-        propertyPanel.add(degreeDistributionButton, gridBagConstraints);
-
         propertyInfo.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(propertyInfo, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.propertyInfo.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -173,23 +165,16 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         propertyDisplay.setViewportView(propertyContentDisplay);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.ipady = 5;
-        gridBagConstraints.weighty = 5.0;
+        gridBagConstraints.weightx = 2.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         propertyPanel.add(propertyDisplay, gridBagConstraints);
-
-        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.jButton1.text")); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        propertyPanel.add(jButton1, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -197,10 +182,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 5.0;
+        gridBagConstraints.weighty = 1.5;
         mainPanel.add(propertyPanel, gridBagConstraints);
 
         infoPanel.setBackground(new java.awt.Color(100, 150, 255));
+        infoPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 102, 102)));
         infoPanel.setLayout(new java.awt.GridBagLayout());
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sc-logo-white-bg_200px.png")));
@@ -223,6 +209,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         infoPanel.add(fileChooserButton, gridBagConstraints);
@@ -236,6 +223,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
         infoPanel.add(filePathScrollPane, gridBagConstraints);
@@ -243,12 +231,13 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
         mainPanel.add(infoPanel, gridBagConstraints);
 
         metricPanel.setBackground(new java.awt.Color(100, 150, 255));
+        metricPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 102, 102)));
         metricPanel.setLayout(new java.awt.GridBagLayout());
 
         metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Closeness","Betweenness" }));
@@ -298,9 +287,109 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weighty = 0.75;
+        mainPanel.add(metricPanel, gridBagConstraints);
+
+        distributionPanel.setBackground(new java.awt.Color(100, 150, 255));
+        distributionPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 102, 102)));
+        distributionPanel.setLayout(new java.awt.GridBagLayout());
+
+        org.openide.awt.Mnemonics.setLocalizedText(degreeDistributionButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.degreeDistributionButton.text")); // NOI18N
+        degreeDistributionButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        degreeDistributionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                degreeDistributionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        distributionPanel.add(degreeDistributionButton, gridBagConstraints);
+
+        distributionInfo.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(distributionInfo, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.distributionInfo.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        distributionPanel.add(distributionInfo, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(clusterDistributionButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.clusterDistributionButton.text")); // NOI18N
+        clusterDistributionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clusterDistributionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        distributionPanel.add(clusterDistributionButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weighty = 0.75;
+        mainPanel.add(distributionPanel, gridBagConstraints);
+
+        labelPropagationPanel.setBackground(new java.awt.Color(100, 150, 255));
+        labelPropagationPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 102, 102)));
+        labelPropagationPanel.setLayout(new java.awt.GridBagLayout());
+
+        org.openide.awt.Mnemonics.setLocalizedText(labelPropagationButton, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.labelPropagationButton.text")); // NOI18N
+        labelPropagationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                labelPropagationButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        labelPropagationPanel.add(labelPropagationButton, gridBagConstraints);
+
+        labelPropagationInfo.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(labelPropagationInfo, org.openide.util.NbBundle.getMessage(SignalCollectSNATopComponent.class, "SignalCollectSNATopComponent.labelPropagationInfo.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        labelPropagationPanel.add(labelPropagationInfo, gridBagConstraints);
+
+        stepNumberPane.setViewportView(jTextPane1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 15, 10, 15);
+        labelPropagationPanel.add(stepNumberPane, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
-        mainPanel.add(metricPanel, gridBagConstraints);
+        mainPanel.add(labelPropagationPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -406,14 +495,14 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
-            JFreeChart chart = scgc.createDegreeDistributionImageFile(scgc.getDegreeDistribution(),"DegreeDistribution.png");
+            JFreeChart chart = scgc.createDegreeDistributionImageFile(scgc.getDegreeDistribution(), "DegreeDistribution.png");
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
-            degreeDistributionFrame.setMinimumSize(dim);
-            degreeDistributionFrame.add(chartPanel);
+            distributionFrame.setMinimumSize(dim);
+            distributionFrame.add(chartPanel);
 
-            degreeDistributionFrame.pack();
-            degreeDistributionFrame.setVisible(true);
+            distributionFrame.pack();
+            distributionFrame.setVisible(true);
         } catch (Exception exception) {
             JFrame messageFrame = new JFrame();
             String exceptionMessage = "";
@@ -443,22 +532,88 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void clusterDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clusterDistributionButtonActionPerformed
+
+        try {
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            if (jTextArea1.getText() == null) {
+                throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
+            }
+            if (!jTextArea1.getText().contains(".gml")) {
+                throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
+            }
+            scgc = new LocalClusterCoefficientSignalCollectGephiConnectorImpl(fileName);
+            JFreeChart chart = scgc.createClusterDistributionImageFile(scgc.getClusterDistribution(), "ClusterDistribution.png");
+            ChartPanel chartPanel = new ChartPanel(chart);
+            Dimension dim = new Dimension(750, 450);
+            distributionFrame.setMinimumSize(dim);
+            distributionFrame.add(chartPanel);
+
+            distributionFrame.pack();
+            distributionFrame.setVisible(true);
+        } catch (Exception exception) {
+            JFrame messageFrame = new JFrame();
+            String exceptionMessage = "";
+            if (exception instanceof IllegalArgumentException) {
+                exceptionMessage = exception.getMessage();
+            } else {
+                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
+            }
+            JOptionPane.showMessageDialog(messageFrame,
+                    exceptionMessage,
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } finally {
+            mainPanel.setCursor(Cursor.getDefaultCursor());
+        }
+    }//GEN-LAST:event_clusterDistributionButtonActionPerformed
+
+    private void labelPropagationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelPropagationButtonActionPerformed
+        try {
+            mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            if (jTextPane1.getText() == null) {
+                throw new IllegalArgumentException("No input found!");
+            }
+
+            scgc = new LabelPropagationSignalCollectGephiConnectorImpl(fileName, scala.Option.apply(new Integer(jTextPane1.getText())));
+
+            scgc.getLabelPropagation();
+        } catch (Exception exception) {
+            JFrame messageFrame = new JFrame();
+            String exceptionMessage = "";
+            if (exception instanceof IllegalArgumentException || exception instanceof NumberFormatException) {
+                exceptionMessage = exception.getMessage();
+            } else {
+                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
+            }
+            JOptionPane.showMessageDialog(messageFrame,
+                    exceptionMessage,
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } finally {
+            mainPanel.setCursor(Cursor.getDefaultCursor());
+        }
+
+    }//GEN-LAST:event_labelPropagationButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton clusterDistributionButton;
     private javax.swing.JButton degreeDistributionButton;
-    private javax.swing.JFrame degreeDistributionFrame;
+    private javax.swing.JFrame distributionFrame;
+    private javax.swing.JLabel distributionInfo;
+    private javax.swing.JPanel distributionPanel;
     private javax.swing.JButton fileChooserButton;
     private javax.swing.JScrollPane filePathScrollPane;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel infoTextLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JButton labelPropagationButton;
+    private javax.swing.JLabel labelPropagationInfo;
+    private javax.swing.JPanel labelPropagationPanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JComboBox metricDropDown;
     private javax.swing.JPanel metricPanel;
@@ -471,6 +626,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private javax.swing.JLabel propertyInfo;
     private javax.swing.JPanel propertyPanel;
     private javax.swing.JButton runMetricButton;
+    private javax.swing.JScrollPane stepNumberPane;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
