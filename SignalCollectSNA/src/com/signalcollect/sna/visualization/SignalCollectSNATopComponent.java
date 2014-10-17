@@ -57,6 +57,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
     private SignalCollectGephiConnector scgc;
     private String fileName;
+    JFrame messageFrame;
 
     public SignalCollectSNATopComponent() {
         initComponents();
@@ -124,6 +125,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         setLayout(new java.awt.GridBagLayout());
 
         mainPanel.setBackground(new java.awt.Color(100, 150, 255));
+        mainPanel.setMaximumSize(new java.awt.Dimension(1000, 800));
+        mainPanel.setMinimumSize(new java.awt.Dimension(0, 0));
         mainPanel.setLayout(new java.awt.GridBagLayout());
 
         propertyPanel.setBackground(new java.awt.Color(100, 150, 255));
@@ -399,6 +402,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
+
         try {
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             if (jTextArea1.getText() == null) {
@@ -434,16 +438,18 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             metricValuesTextPane.setVisible(true);
             metricValuesScrollPane.setVisible(true);
             metricResultFrame.setVisible(true);
-        } catch (Exception exception) {
-            JFrame messageFrame = new JFrame();
-            String exceptionMessage = "";
-            if (exception instanceof IllegalArgumentException) {
-                exceptionMessage = exception.getMessage();
-            } else {
-                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
-            }
+        } catch (IllegalArgumentException exception) {
+            messageFrame = new JFrame();
             JOptionPane.showMessageDialog(messageFrame,
-                    exceptionMessage,
+                    exception.getMessage(),
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception exception) {
+            messageFrame = new JFrame();
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(messageFrame,
+                    "Technical exception happened (" + exception.getCause() + ")",
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
@@ -457,6 +463,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
         try {
+      
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             if (jTextArea1.getText() == null) {
                 throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
@@ -464,20 +471,24 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
-            if (scgc == null) {
+            
+            if (scgc == null || !scgc.getFileName().equals(fileName)) {
                 scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
             }
             propertyContentDisplay.setText(setPropertyText(scgc.getGraphProperties()));
-        } catch (Exception exception) {
-            JFrame messageFrame = new JFrame();
-            String exceptionMessage = "";
-            if (exception instanceof IllegalArgumentException) {
-                exceptionMessage = exception.getMessage();
-            } else {
-                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
-            }
+        } catch (IllegalArgumentException exception) {
+
+            messageFrame = new JFrame();
             JOptionPane.showMessageDialog(messageFrame,
-                    exceptionMessage,
+                    exception.getMessage(),
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception exception) {
+            messageFrame = new JFrame();
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(messageFrame,
+                    "Technical exception happened (" + exception.getCause() + ")",
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
@@ -500,19 +511,23 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             Dimension dim = new Dimension(750, 450);
             distributionFrame.setMinimumSize(dim);
             distributionFrame.add(chartPanel);
+            chartPanel.setVisible(true);
 
             distributionFrame.pack();
             distributionFrame.setVisible(true);
-        } catch (Exception exception) {
-            JFrame messageFrame = new JFrame();
-            String exceptionMessage = "";
-            if (exception instanceof IllegalArgumentException) {
-                exceptionMessage = exception.getMessage();
-            } else {
-                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
-            }
+        } catch (IllegalArgumentException exception) {
+
+            messageFrame = new JFrame();
             JOptionPane.showMessageDialog(messageFrame,
-                    exceptionMessage,
+                    exception.getMessage(),
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception exception) {
+            messageFrame = new JFrame();
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(messageFrame,
+                    "Technical exception happened (" + exception.getCause() + ")",
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
@@ -547,20 +562,24 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
             distributionFrame.setMinimumSize(dim);
+            chartPanel.setVisible(true);
             distributionFrame.add(chartPanel);
 
             distributionFrame.pack();
             distributionFrame.setVisible(true);
-        } catch (Exception exception) {
-            JFrame messageFrame = new JFrame();
-            String exceptionMessage = "";
-            if (exception instanceof IllegalArgumentException) {
-                exceptionMessage = exception.getMessage();
-            } else {
-                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
-            }
+        } catch (IllegalArgumentException exception) {
+
+            messageFrame = new JFrame();
             JOptionPane.showMessageDialog(messageFrame,
-                    exceptionMessage,
+                    exception.getMessage(),
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception exception) {
+            messageFrame = new JFrame();
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(messageFrame,
+                    "Technical exception happened (" + exception.getCause() + ")",
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
@@ -574,20 +593,21 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (jTextPane1.getText() == null) {
                 throw new IllegalArgumentException("No input found!");
             }
-
             scgc = new LabelPropagationSignalCollectGephiConnectorImpl(fileName, scala.Option.apply(new Integer(jTextPane1.getText())));
 
             scgc.getLabelPropagation();
-        } catch (Exception exception) {
-            JFrame messageFrame = new JFrame();
-            String exceptionMessage = "";
-            if (exception instanceof IllegalArgumentException || exception instanceof NumberFormatException) {
-                exceptionMessage = exception.getMessage();
-            } else {
-                exceptionMessage = "Fatal technical exception happened (" + exception.getCause() + ")";
-            }
+        } catch (IllegalArgumentException exception) {
+
             JOptionPane.showMessageDialog(messageFrame,
-                    exceptionMessage,
+                    exception.getMessage(),
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } catch (Exception exception) {
+            messageFrame = new JFrame();
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(messageFrame,
+                    "Technical exception happened (" + exception.getCause() + ")",
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
