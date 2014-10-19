@@ -506,6 +506,9 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
+            distributionFrame.setVisible(false);
+            distributionFrame = new JFrame();
+
             scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
             JFreeChart chart = scgc.createDegreeDistributionChart(scgc.getDegreeDistribution());
             ChartPanel chartPanel = new ChartPanel(chart);
@@ -513,6 +516,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             distributionFrame.setMinimumSize(dim);
             distributionFrame.add(chartPanel);
             chartPanel.setVisible(true);
+            chartPanel.validate();
 
             distributionFrame.pack();
             distributionFrame.setVisible(true);
@@ -559,12 +563,17 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
+            distributionFrame.setVisible(false);
+            distributionFrame = new JFrame();
+
             scgc = new LocalClusterCoefficientSignalCollectGephiConnectorImpl(fileName);
             JFreeChart chart = scgc.createClusterDistributionChart(scgc.getClusterDistribution());
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
             distributionFrame.setMinimumSize(dim);
             chartPanel.setVisible(true);
+            chartPanel.validate();
+
             distributionFrame.add(chartPanel);
 
             distributionFrame.pack();
