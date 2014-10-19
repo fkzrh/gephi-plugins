@@ -5,6 +5,7 @@
  */
 package com.signalcollect.sna.visualization;
 
+import com.signalcollect.sna.DegreeDistribution;
 import com.signalcollect.sna.GraphProperties;
 import com.signalcollect.sna.gephiconnectors.BetweennessSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.ClosenessSignalCollectGephiConnectorImpl;
@@ -463,7 +464,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
 
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
         try {
-      
+
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             if (jTextArea1.getText() == null) {
                 throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
@@ -471,7 +472,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (!jTextArea1.getText().contains(".gml")) {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
-            
+
             if (scgc == null || !scgc.getFileName().equals(fileName)) {
                 scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
             }
@@ -506,7 +507,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
-            JFreeChart chart = scgc.createDegreeDistributionImageFile(scgc.getDegreeDistribution(), "DegreeDistribution.png");
+            JFreeChart chart = scgc.createDegreeDistributionChart(scgc.getDegreeDistribution());
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
             distributionFrame.setMinimumSize(dim);
@@ -543,6 +544,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         if (chooser.getSelectedFile() != null) {
             fileName = chooser.getSelectedFile().getAbsolutePath();
             jTextArea1.setText(fileName);
+            distributionFrame = new JFrame();
 //            filePathTextPane.setText(fileName);
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
@@ -558,7 +560,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 throw new IllegalArgumentException("The chosen file doesn't have the right format!\nPlease choose a valid .gml file");
             }
             scgc = new LocalClusterCoefficientSignalCollectGephiConnectorImpl(fileName);
-            JFreeChart chart = scgc.createClusterDistributionImageFile(scgc.getClusterDistribution(), "ClusterDistribution.png");
+            JFreeChart chart = scgc.createClusterDistributionChart(scgc.getClusterDistribution());
             ChartPanel chartPanel = new ChartPanel(chart);
             Dimension dim = new Dimension(750, 450);
             distributionFrame.setMinimumSize(dim);
