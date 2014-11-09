@@ -5,7 +5,6 @@
  */
 package com.signalcollect.sna.visualization;
 
-import com.signalcollect.sna.DegreeDistribution;
 import com.signalcollect.sna.GraphProperties;
 import com.signalcollect.sna.gephiconnectors.BetweennessSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.ClosenessSignalCollectGephiConnectorImpl;
@@ -14,6 +13,7 @@ import com.signalcollect.sna.gephiconnectors.LabelPropagationSignalCollectGephiC
 import com.signalcollect.sna.gephiconnectors.LocalClusterCoefficientSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.PageRankSignalCollectGephiConnectorImpl;
 import com.signalcollect.sna.gephiconnectors.SignalCollectGephiConnector;
+import com.signalcollect.sna.gephiconnectors.TriadCensusSignalCollectGephiConnectorImpl;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.util.Map;
@@ -21,17 +21,17 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.html.HTMLDocument;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 
 /**
- * Top component which displays something.
+ * Top component which displays the functionalities to use Signal/Collect SNA.
  */
 @ConvertAsProperties(
         dtd = "-//com.signalcollect.sna.visualization//SignalCollectSNA//EN",
@@ -60,6 +60,44 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private String fileName;
     JFrame messageFrame;
 
+    private final String CSS_STYLE = "<style type=text/css>"
+            + "    .Table"
+            + "    {"
+            + "	    font-family:verdana,geneva,sans-serif;"
+            + "        display: table;"
+            + "    }"
+            + "    .Title"
+            + "    {"
+            + "        display: table-caption;"
+            + "        text-align: center;"
+            + "        font-weight: bold;"
+            + "        font-size: 12px;"
+            + "    }"
+            + "    .Heading"
+            + "    {"
+            + "        display: table-row;"
+            + "        font-weight: bold;"
+            + "        font-size: 12px;"
+            + "        text-align: center;"
+            + "    }"
+            + "    .Row"
+            + "    {"
+            + "        display: table-row;"
+            + "    }"
+            + "    .Cell"
+            + "    {"
+            + "        display: table-cell;"
+            + "        border: solid;"
+            + "        font-size: 11px;"
+            + "        border-width: thin;"
+            + "        padding-left: 5px;"
+            + "        padding-right: 5px;"
+            + "    }"
+            + "</style>";
+
+    /**
+     * Constructor
+     */
     public SignalCollectSNATopComponent() {
         initComponents();
         setName(Bundle.CTL_SignalCollectSNATopComponent());
@@ -244,7 +282,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         metricPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(102, 102, 102)));
         metricPanel.setLayout(new java.awt.GridBagLayout());
 
-        metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Closeness","Betweenness" }));
+        metricDropDown.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Degree", "PageRank", "Closeness","Betweenness", "Local Cluster Coefficient", "Triad Census" }));
         metricDropDown.setAutoscrolls(true);
         metricDropDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -402,6 +440,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         add(mainPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Runs a Signal/Collect SNA method when the "Run" button is clicked
+     *
+     * @param evt
+     */
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
 
         try {
@@ -430,6 +473,16 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 scgc.executeGraph();
 
                 metricValuesTextPane.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            } else if (actualMetric.equals("Local Cluster Coefficient")) {
+                scgc = new LocalClusterCoefficientSignalCollectGephiConnectorImpl(fileName);
+                scgc.executeGraph();
+
+                metricValuesTextPane.setText(setMetricText(scgc.getAverage(), scgc.getAll()));
+            } else if (actualMetric.equals("Triad Census")) {
+                scgc = new TriadCensusSignalCollectGephiConnectorImpl(fileName);
+                scgc.executeGraph();
+
+                metricValuesTextPane.setText(setTriadCensusText(scgc.getAll()));
             } else {
                 throw new IllegalArgumentException("invalid Signal/Collect metric chosen!\nPlease try again");
             }
@@ -462,6 +515,12 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         // TODO add your handling code here:
     }//GEN-LAST:event_metricDropDownActionPerformed
 
+    /**
+     * Gets the properties of the current graph by clicking on the property
+     * button
+     *
+     * @param evt
+     */
     private void propertyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertyButtonActionPerformed
         try {
 
@@ -476,6 +535,8 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (scgc == null || !scgc.getFileName().equals(fileName)) {
                 scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
             }
+            HTMLDocument doc = (HTMLDocument) propertyContentDisplay.getDocument();
+
             propertyContentDisplay.setText(setPropertyText(scgc.getGraphProperties()));
         } catch (IllegalArgumentException exception) {
 
@@ -497,6 +558,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         }
     }//GEN-LAST:event_propertyButtonActionPerformed
 
+    /**
+     * Gets and visualizes the chart of the Degree Distribution
+     *
+     * @param evt
+     */
     private void degreeDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_degreeDistributionButtonActionPerformed
         try {
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -540,6 +606,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         }
     }//GEN-LAST:event_degreeDistributionButtonActionPerformed
 
+    /**
+     * Displays a file chooser when clicking on the "Choose File" button
+     *
+     * @param evt
+     */
     private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Graph Files", "gml");
         JFileChooser chooser = new JFileChooser();
@@ -553,6 +624,12 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
+    /**
+     * Gets and visualizes the chart of the Local Cluster Coefficient
+     * Distribution
+     *
+     * @param evt
+     */
     private void clusterDistributionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clusterDistributionButtonActionPerformed
 
         try {
@@ -598,6 +675,11 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         }
     }//GEN-LAST:event_clusterDistributionButtonActionPerformed
 
+    /**
+     * Executes the label propagation algorithm
+     *
+     * @param evt
+     */
     private void labelPropagationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelPropagationButtonActionPerformed
         try {
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -681,6 +763,13 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         // TODO read your settings according to their version
     }
 
+    /**
+     * Sets the formatted text for the execution of a SNA method
+     *
+     * @param avg
+     * @param vertexMap
+     * @return HTML-formatted String
+     */
     private String setMetricText(double avg, Map<String, Object> vertexMap) {
         String res = "<!doctype html><html><head><title>Execution Results</title><style type=\"text/css\"></style>"
                 + "</head>"
@@ -698,12 +787,38 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         return res;
     }
 
+    /**
+     * Sets the formatted text for the execution of the Triad Census
+     *
+     * @param vertexMap
+     * @return HTML-formatted String
+     */
+    private String setTriadCensusText(Map<String, Object> vertexMap) {
+        String res = "<!doctype html><html><head><title>Execution Results</title><style type=\"text/css\"></style>"
+                + "</head>"
+                + "<body>"
+                + "<h1><span style=\"font-family:verdana,geneva,sans-serif;font-size:12px;font-weight:normal\">Execution Results</span></h1>"
+                + "<h2><span style=\"font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;\">Triad Census Values:</span></h2>";
+        for (Map.Entry<String, Object> entry : vertexMap.entrySet()) {
+            res += "<li><span style=\"font-family:verdana,geneva,sans-serif;font-size:10px;\">Triad type:&nbsp;" + entry.getKey() + "&emsp;Value: " + entry.getValue() + "</span></li>";
+        }
+
+        res += "</ul><p>&nbsp;</p></body></html>";
+
+        return res;
+    }
+
+    /**
+     * Sets the formatted text for the network properties
+     *
+     * @param props
+     * @return HTML-formatted String
+     */
     private String setPropertyText(GraphProperties props) {
-        String res = "<!doctype html><html><head><title>Graph Properties</title>"
-                + "<style type=\"text/css\">"
+        String res = "<!doctype html><html><head><title>Execution Results</title><style type=\"text/css\">"
                 + "table.tablestyle {border-collapse:collapse}"
-                + "table.tablestyle td {border: 2px solid #000000; font-family:verdana,geneva,sans-serif;font-size:10px;font-weight:normal;}"
-                + "table.tablestyle th {border: 2px solid #000000; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:normal;}"
+                + "table.tablestyle td {border: 2px solid #000000; font-family:verdana,geneva,sans-serif;font-size:10px;font-weight:normal;text-align: left; padding: 5px;}"
+                + "table.tablestyle th {border: 2px solid #000000; font-family:verdana,geneva,sans-serif;font-size:11px;font-weight:bold;text-align:left; padding: 5px;}"
                 + "</style>"
                 + "</head>"
                 + "<body>"
@@ -714,8 +829,6 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                 + "<tr><td>Diameter</td><td>" + props.calcDiameter() + "</td></tr>"
                 + "<tr><td>Reciprocity</td><td>" + props.calcReciprocity() + "</td></tr>"
                 + "</table></body></html>";
-
         return res;
     }
-
 }

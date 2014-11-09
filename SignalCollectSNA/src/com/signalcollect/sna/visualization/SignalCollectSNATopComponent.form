@@ -267,7 +267,7 @@
             <Component class="javax.swing.JComboBox" name="metricDropDown">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.DefaultComboBoxModel(new String[] {&quot;Degree&quot;, &quot;PageRank&quot;, &quot;Closeness&quot;,&quot;Betweenness&quot; })" type="code"/>
+                  <Connection code="new javax.swing.DefaultComboBoxModel(new String[] {&quot;Degree&quot;, &quot;PageRank&quot;, &quot;Closeness&quot;,&quot;Betweenness&quot;, &quot;Local Cluster Coefficient&quot;, &quot;Triad Census&quot; })" type="code"/>
                 </Property>
                 <Property name="autoscrolls" type="boolean" value="true"/>
               </Properties>
