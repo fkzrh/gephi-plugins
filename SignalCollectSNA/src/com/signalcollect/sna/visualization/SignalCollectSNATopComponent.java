@@ -27,7 +27,6 @@ import org.gephi.io.importer.api.Container;
 import org.gephi.io.importer.api.ImportController;
 import org.gephi.io.processor.plugin.DefaultProcessor;
 import org.gephi.project.api.ProjectController;
-import org.gephi.project.api.Workspace;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -45,7 +44,7 @@ import org.openide.windows.TopComponent;
         autostore = false
 )
 @TopComponent.Description(
-        preferredID = "SignalCollectSNATopComponent",
+        preferredID = "signal-collect-sna",
         //iconBase="SET/PATH/TO/ICON/HERE", 
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
@@ -57,9 +56,9 @@ import org.openide.windows.TopComponent;
         preferredID = "SignalCollectSNATopComponent"
 )
 @Messages({
-    "CTL_SignalCollectSNAAction=SignalCollectSNA",
-    "CTL_SignalCollectSNATopComponent=SignalCollectSNA Window",
-    "HINT_SignalCollectSNATopComponent=This is a SignalCollectSNA window"
+    "CTL_SignalCollectSNAAction=SignalCollect SNA",
+    "CTL_SignalCollectSNATopComponent=Signal/Collect SNA",
+    "HINT_SignalCollectSNATopComponent=Plugin to perform SNA with Signal/Collect"
 })
 public final class SignalCollectSNATopComponent extends TopComponent {
 
