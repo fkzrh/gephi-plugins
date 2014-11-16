@@ -16,17 +16,24 @@ import com.signalcollect.sna.gephiconnectors.SignalCollectGephiConnector;
 import com.signalcollect.sna.gephiconnectors.TriadCensusSignalCollectGephiConnectorImpl;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLDocument;
+import org.gephi.io.importer.api.Container;
+import org.gephi.io.importer.api.ImportController;
+import org.gephi.io.processor.plugin.DefaultProcessor;
+import org.gephi.project.api.ProjectController;
+import org.gephi.project.api.Workspace;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 
@@ -59,41 +66,6 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private SignalCollectGephiConnector scgc;
     private String fileName;
     JFrame messageFrame;
-
-    private final String CSS_STYLE = "<style type=text/css>"
-            + "    .Table"
-            + "    {"
-            + "	    font-family:verdana,geneva,sans-serif;"
-            + "        display: table;"
-            + "    }"
-            + "    .Title"
-            + "    {"
-            + "        display: table-caption;"
-            + "        text-align: center;"
-            + "        font-weight: bold;"
-            + "        font-size: 12px;"
-            + "    }"
-            + "    .Heading"
-            + "    {"
-            + "        display: table-row;"
-            + "        font-weight: bold;"
-            + "        font-size: 12px;"
-            + "        text-align: center;"
-            + "    }"
-            + "    .Row"
-            + "    {"
-            + "        display: table-row;"
-            + "    }"
-            + "    .Cell"
-            + "    {"
-            + "        display: table-cell;"
-            + "        border: solid;"
-            + "        font-size: 11px;"
-            + "        border-width: thin;"
-            + "        padding-left: 5px;"
-            + "        padding-right: 5px;"
-            + "    }"
-            + "</style>";
 
     /**
      * Constructor
@@ -448,6 +420,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     private void runMetricButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMetricButtonActionPerformed
 
         try {
+
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             if (jTextArea1.getText() == null) {
                 throw new IllegalArgumentException("No file was chosen!\nPlease choose a valid .gml file");
@@ -607,11 +580,13 @@ public final class SignalCollectSNATopComponent extends TopComponent {
     }//GEN-LAST:event_degreeDistributionButtonActionPerformed
 
     /**
-     * Displays a file chooser when clicking on the "Choose File" button
+     * Displays a file chooser when clicking on the "Choose File" button The
+     * chosen file is then used for a new gephi project
      *
      * @param evt
      */
     private void fileChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserButtonActionPerformed
+
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Graph Files", "gml");
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(filter);
@@ -620,8 +595,24 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             fileName = chooser.getSelectedFile().getAbsolutePath();
             jTextArea1.setText(fileName);
             distributionFrame = new JFrame();
-//            filePathTextPane.setText(fileName);
         }
+        try {
+            ProjectController pc = Lookup.getDefault().lookup(ProjectController.class);
+            pc.newProject();
+            ImportController ic = Lookup.getDefault().lookup(ImportController.class);
+            File file = new File(fileName);
+            Container c = ic.importFile(file);
+            ic.process(c, new DefaultProcessor(), pc.newWorkspace(pc.getCurrentProject()));
+
+        } catch (Exception exception) {
+            messageFrame = new JFrame();
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(messageFrame,
+                    "Error while creating graph (" + exception.getCause() + "), please choose a valid .gml-File",
+                    "Signal/Collect Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
     /**
