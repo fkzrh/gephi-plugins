@@ -1,6 +1,9 @@
+Social Network Analysis with Signal/Collect - The Gephi Plugin
+========================================================================================================================
+
 This repository features a [Gephi](http://www.gephi.org) plugin developed to run Social Network Analysis methods with [Signal/Collect](http://uzh.github.io/signal-collect/)
 
-## Get started
+### Get started
 
 
 - Download and install the latest version of [Netbeans IDE](http://netbeans.org).
