@@ -507,8 +507,6 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (scgc == null || !scgc.getFileName().equals(fileName)) {
                 scgc = new DegreeSignalCollectGephiConnectorImpl(fileName);
             }
-            HTMLDocument doc = (HTMLDocument) propertyContentDisplay.getDocument();
-
             propertyContentDisplay.setText(setPropertyText(scgc.getGraphProperties()));
         } catch (IllegalArgumentException exception) {
 
@@ -694,6 +692,7 @@ public final class SignalCollectSNATopComponent extends TopComponent {
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
         } finally {
+            scgc = null;
             mainPanel.setCursor(Cursor.getDefaultCursor());
         }
 
