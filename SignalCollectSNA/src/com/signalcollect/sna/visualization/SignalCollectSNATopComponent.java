@@ -22,7 +22,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.html.HTMLDocument;
 import org.gephi.io.importer.api.Container;
 import org.gephi.io.importer.api.ImportController;
 import org.gephi.io.processor.plugin.DefaultProcessor;
@@ -587,29 +586,30 @@ public final class SignalCollectSNATopComponent extends TopComponent {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Graph Files", "gml");
         JFileChooser chooser = new JFileChooser();
         chooser.setFileFilter(filter);
-        chooser.showOpenDialog(null);
-        if (chooser.getSelectedFile() != null) {
+        int result = chooser.showOpenDialog(this);
+        if (chooser.getSelectedFile() != null && result == JFileChooser.APPROVE_OPTION) {
             fileName = chooser.getSelectedFile().getAbsolutePath();
             jTextArea1.setText(fileName);
             distributionFrame = new JFrame();
-        }
-        try {
-            ProjectController pc = Lookup.getDefault().lookup(ProjectController.class);
-            pc.newProject();
-            ImportController ic = Lookup.getDefault().lookup(ImportController.class);
-            File file = new File(fileName);
-            Container c = ic.importFile(file);
-            ic.process(c, new DefaultProcessor(), pc.newWorkspace(pc.getCurrentProject()));
 
-        } catch (Exception exception) {
-            messageFrame = new JFrame();
-            exception.printStackTrace();
-            JOptionPane.showMessageDialog(messageFrame,
-                    "Error while creating graph (" + exception.getCause() + "), please choose a valid .gml-File",
-                    "Signal/Collect Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+            try {
+                ProjectController pc = Lookup.getDefault().lookup(ProjectController.class);
+                pc.newProject();
+                ImportController ic = Lookup.getDefault().lookup(ImportController.class);
+                File file = new File(fileName);
+                Container c = ic.importFile(file);
+                ic.process(c, new DefaultProcessor(), pc.newWorkspace(pc.getCurrentProject()));
+                propertyContentDisplay.setText("");
 
+            } catch (Exception exception) {
+                messageFrame = new JFrame();
+                exception.printStackTrace();
+                JOptionPane.showMessageDialog(messageFrame,
+                        "Error while creating graph (" + exception.getCause() + "), please choose a valid .gml-File",
+                        "Signal/Collect Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
     /**
@@ -674,13 +674,16 @@ public final class SignalCollectSNATopComponent extends TopComponent {
             if (jTextPane1.getText() == null) {
                 throw new IllegalArgumentException("No input found!");
             }
-            scgc = new LabelPropagationSignalCollectGephiConnectorImpl(fileName, scala.Option.apply(new Integer(jTextPane1.getText())));
+            if(Integer.parseInt(jTextPane1.getText()) < 1){
+                throw new IllegalArgumentException("The number has to be greater than 0");
+            }
+            scgc = new LabelPropagationSignalCollectGephiConnectorImpl(fileName, scala.Option.apply(Integer.parseInt(jTextPane1.getText())));
 
             scgc.getLabelPropagation();
         } catch (IllegalArgumentException exception) {
 
             JOptionPane.showMessageDialog(messageFrame,
-                    exception.getMessage(),
+                    "Error when parsing input " + jTextPane1.getText() + ": " + exception.getMessage(),
                     "Signal/Collect Error",
                     JOptionPane.ERROR_MESSAGE);
 
